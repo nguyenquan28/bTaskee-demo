@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { View, Text, StyleSheet, SafeAreaView, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import firebaseSetup from '../firebase/setup'
 
 const Register = () => {
 
@@ -11,11 +12,19 @@ const Register = () => {
     const USA = require('../assets/images/usa.png')
     const HK = require('../assets/images/HK.png')
 
-
+    // Create var
+    const { auth } = firebaseSetup()
+    const [confirm, setConfirm] = useState(null)
     const [phoneNumber, setPhoneNumber] = useState()
     const [name, setName] = useState()
     const [email, setEmail] = useState()
-    const [code, setCode] = useState()
+    const [introducCode, setIntroducCode] = useState('')
+
+    // Create account with phone number
+    const signInWithPhoneNumber = async (phoneNumber) => {
+        const confirmation = await auth().signInWithPhoneNumber(phoneNumber)
+        setConfirm(confirmation)
+    }
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -74,7 +83,7 @@ const Register = () => {
                 <Text style={styles.titleInput}>Mã giới thiệu</Text>
                 <TextInput
                     style={styles.input}
-                    onChangeText={setEmail}
+                    onChangeText={setIntroducCode}
                     placeholder="123456"
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -95,7 +104,9 @@ const Register = () => {
                     </View>
                 </View>
 
-                <TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => signInWithPhoneNumber(phoneNumber)}
+                >
                     <View style={styles.footerRight}>
                         <Ionicons name={'chevron-forward'} size={40} color={'#fff'} />
                     </View>

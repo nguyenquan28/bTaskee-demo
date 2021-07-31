@@ -4,7 +4,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Register from './src/screen/Register';
 
+import firebaseSetup from './src/firebase/setup'
+
 const App = () => {
+
+  const { auth } = firebaseSetup()
 
   const Stack = createStackNavigator()
 
