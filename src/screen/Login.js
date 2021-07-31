@@ -5,6 +5,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Login = ({ navigation }) => {
 
+    // Require image
     const VN = require('../assets/images/vn.png')
     const THAI = require('../assets/images/thai.jpg')
     const USA = require('../assets/images/usa.png')
