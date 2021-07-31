@@ -28,11 +28,13 @@ const Login = ({ navigation }) => {
                 {/* Phone number */}
                 <Text style={styles.titleInput}>Số điện thoại</Text>
                 <View style={styles.phoneArea}>
-                    <View style={styles.areaNumber}>
-                        <Image style={styles.flag} source={VN} />
-                        <Text style={[styles.p, { marginHorizontal: 5 }]}>+84</Text>
-                        <Ionicons name={'caret-down'} size={20} color={'#4f4f4f'} />
-                    </View>
+                    <TouchableOpacity>
+                        <View style={styles.areaNumber}>
+                            <Image style={styles.flag} source={VN} />
+                            <Text style={[styles.p, { marginHorizontal: 5 }]}>+84</Text>
+                            <Ionicons name={'caret-down'} size={20} color={'#4f4f4f'} />
+                        </View>
+                    </TouchableOpacity>
                     <TextInput
                         style={styles.input}
                         placeholder='Nhập số điện thoại'
@@ -55,21 +57,23 @@ const Login = ({ navigation }) => {
                 />
 
                 {/* Button */}
-                <TouchableOpacity>
-                    <Text style={styles.btnLogin}>Đăng nhập</Text>
+                <TouchableOpacity style={styles.btnLogin}>
+                    <Text style={styles.textLogin}>Đăng nhập</Text>
                 </TouchableOpacity>
 
                 {/* Footer */}
-                <View>
-                    <View>
-                        <Text>Bạn chưa có tài khoản?</Text>
-                        <TouchableOpacity>
-                            <Text>Tạo tài khoản</Text>
+                <View style={styles.footer}>
+                    <View style={styles.register}>
+                        <Text style={styles.p}>Bạn chưa có tài khoản?</Text>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('Đăng ký')}
+                        >
+                            <Text style={styles.textLink}>Tạo tài khoản</Text>
                         </TouchableOpacity>
                     </View>
 
-                    <TouchableOpacity>
-                        <Text>Quên mật khẩu</Text>
+                    <TouchableOpacity style={styles.forgotPass}>
+                        <Text style={styles.textLink}>Quên mật khẩu</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -90,7 +94,7 @@ const styles = StyleSheet.create({
     },
 
     phoneArea: {
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
 
     headerText: {
@@ -114,26 +118,65 @@ const styles = StyleSheet.create({
     flag: {
         width: 25,
         height: 20,
+        marginLeft: 5
     },
 
     areaNumber: {
+        height: 60,
         backgroundColor: '#ebebeb',
         paddingTop: 10,
         paddingBottom: 10,
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
         borderRadius: 10,
-        margin: 10,
         flexDirection: 'row',
+        marginBottom: 10,
+        marginTop: 10,
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        marginRight: 10,
     },
 
     input: {
+        fontSize: 18,
+        minWidth: 250,
+        height: 60,
         borderWidth: 1,
-        margin: 10,
+        marginTop: 10,
+        marginBottom: 0,
         borderRadius: 10,
-        paddingHorizontal: 15,
-        backgroundColor: 'white'
+        paddingHorizontal: 20,
+        backgroundColor: 'white',
+        marginBottom: 30,
+    },
+
+    btnLogin: {
+        backgroundColor: '#ebebeb',
+        padding: 20,
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+
+    textLogin: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#47d173'
+    },
+
+    footer: {
+        marginTop: 160,
+        alignItems: 'center'
+    },
+
+    register: {
+        flexDirection: 'row',
+        marginBottom: 20
+    },
+
+    textLink: {
+        fontSize: 18,
+        color: '#47d173',
+        fontWeight: 'bold',
+        marginHorizontal: 10
     }
 })
 

@@ -1,37 +1,26 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 import Login from './src/screen/Login';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Register from './src/screen/Register';
 
 const App = () => {
 
+  const Stack = createStackNavigator()
+
   return (
-    <SafeAreaView>
-      <Login />
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name='Đăng nhập'
+          component={Login}
+        />
+        <Stack.Screen
+          name='Đăng ký'
+          component={Register}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
