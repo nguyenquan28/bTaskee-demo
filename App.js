@@ -3,28 +3,29 @@ import Login from './src/screen/Login';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Register from './src/screen/Register';
-
-import firebaseSetup from './src/firebase/setup'
-
+import VerifyCode from './src/screen/VerifyCode';
 const App = () => {
-
-  const { auth } = firebaseSetup()
 
   const Stack = createStackNavigator()
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name='Đăng nhập'
-          component={Login}
-        />
-        <Stack.Screen
-          name='Đăng ký'
-          component={Register}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    // <NavigationContainer>
+    //   <Stack.Navigator>
+    //     <Stack.Screen
+    //       name='Đăng nhập'
+    //       component={Login}
+    //     />
+    //     <Stack.Screen
+    //       name='Đăng ký'
+    //       component={Register}
+    //     />
+    //     <Stack.Screen
+    //       name='Xác thực tài khoản'
+    //       component={VerifyCode}
+    //     />
+    //   </Stack.Navigator>
+    // </NavigationContainer>
+    <VerifyCode />
   );
 };
 

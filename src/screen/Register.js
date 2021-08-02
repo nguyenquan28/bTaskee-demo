@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, SafeAreaView, TextInput, TouchableOpacity, Imag
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import firebaseSetup from '../firebase/setup'
 
-const Register = () => {
+const Register = ({ navigation }) => {
 
     // Require image
     const VN = require('../assets/images/vn.png')
@@ -22,8 +22,9 @@ const Register = () => {
 
     // Create account with phone number
     const signInWithPhoneNumber = async (phoneNumber) => {
-        const confirmation = await auth().signInWithPhoneNumber(phoneNumber)
-        setConfirm(confirmation)
+        // const confirmation = await auth().signInWithPhoneNumber(phoneNumber)
+        // setConfirm(confirmation)
+        navigation.replace('Xác thực tài khoản')
     }
 
     return (
