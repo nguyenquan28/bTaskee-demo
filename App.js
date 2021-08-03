@@ -9,23 +9,22 @@ const App = () => {
   const Stack = createStackNavigator()
 
   return (
-    // <NavigationContainer>
-    //   <Stack.Navigator>
-    //     <Stack.Screen
-    //       name='Đăng nhập'
-    //       component={Login}
-    //     />
-    //     <Stack.Screen
-    //       name='Đăng ký'
-    //       component={Register}
-    //     />
-    //     <Stack.Screen
-    //       name='Xác thực tài khoản'
-    //       component={VerifyCode}
-    //     />
-    //   </Stack.Navigator>
-    // </NavigationContainer>
-    <VerifyCode />
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name='Đăng nhập'
+          component={Login}
+        />
+        <Stack.Screen
+          name='Đăng ký'
+          component={Register}
+        />
+        <Stack.Screen
+          name='Xác thực tài khoản'
+          component={VerifyCode}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 

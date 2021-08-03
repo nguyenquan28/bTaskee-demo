@@ -1,7 +1,9 @@
 import React from 'react'
 import { useState } from 'react'
-import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import auth from '@react-native-firebase/auth';
+import Dialog from "react-native-dialog";
 
 const Login = ({ navigation }) => {
 
@@ -11,10 +13,46 @@ const Login = ({ navigation }) => {
     const USA = require('../assets/images/usa.png')
     const HK = require('../assets/images/HK.png')
 
+
+    const [confirm, setConfirm] = useState(null);
+    const [visible, setVisible] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState()
-    const [password, setPassword] = useState()
+    const [code, setCode] = useState()
     const [error, setError] = useState("")
     // const { login } = useContext(AuthContext);
+
+    // Method SignIn
+    const signInWithPhoneNumber = async (phoneNumber) => {
+
+        // Get OTP code
+        const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+        setConfirm(confirmation);
+
+        // Verify OTP code
+        showDialog()
+    }
+
+    // Confirm OTP
+    const confirmCode = async (code) => {
+        try {
+            await confirm.confirm(code);
+            console.log('success');
+            handleCancel()
+        } catch (error) {
+            console.log(code);
+            console.log('Invalid code.');
+        }
+    }
+
+    // Show alert
+    const showDialog = () => {
+        setVisible(true);
+    };
+
+    // Hide alert
+    const handleCancel = () => {
+        setVisible(false);
+    };
 
     return (
         <SafeAreaView>
@@ -50,7 +88,7 @@ const Login = ({ navigation }) => {
                 <Text style={styles.titleInput}>Mật khẩu</Text>
                 <TextInput
                     style={styles.input}
-                    onChangeText={setPassword}
+                    // onChangeText={setPassword}
                     placeholderText="Password"
                     iconType="lock"
                     secureTextEntry={true}
@@ -58,7 +96,10 @@ const Login = ({ navigation }) => {
                 />
 
                 {/* Button */}
-                <TouchableOpacity style={styles.btnLogin}>
+                <TouchableOpacity
+                    onPress={() => signInWithPhoneNumber(phoneNumber)}
+                    style={styles.btnLogin}
+                >
                     <Text style={styles.textLogin}>Đăng nhập</Text>
                 </TouchableOpacity>
 
@@ -78,6 +119,16 @@ const Login = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </View>
+
+            {/* Alert */}
+            <Dialog.Container visible={visible}>
+                <Dialog.Title>Xác nhận mã OTP</Dialog.Title>
+                <Dialog.Input
+                    onChangeText={setCode}
+                />
+                <Dialog.Button label="Hủy" onPress={handleCancel} />
+                <Dialog.Button label="Xác nhận" onPress={() => confirmCode(code)} />
+            </Dialog.Container>
         </SafeAreaView>
     )
 }

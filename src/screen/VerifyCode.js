@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import OTPInputView from '@twotalltotems/react-native-otp-input'
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const VerifyCode = ({ navigation }) => {
     let clockCall = null
@@ -47,6 +48,9 @@ const VerifyCode = ({ navigation }) => {
 
             <View style={styles.footer}>
                 <Text style={styles.p}>00:{countdown}</Text>
+                <View style={styles.footerRight}>
+                    <Ionicons name={'chevron-forward'} size={40} color={'#fff'} />
+                </View>
             </View>
         </View>
     )
@@ -95,11 +99,21 @@ const styles = StyleSheet.create({
     },
 
     footer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         position: 'absolute',
         left: 40,
-        right: 0,
+        right: 40,
         bottom: 40,
-    }
+    },
+
+    footerRight: {
+        backgroundColor: '#ebebeb',
+        justifyContent: 'center',
+        padding: 10,
+        borderRadius: 10,
+        marginTop: -15
+    },
 })
 
 export default VerifyCode;
