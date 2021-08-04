@@ -16,7 +16,7 @@ const SetPassword = ({ navigation, route }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            {console.log(phoneNumber + "/" + name + "/" + email + "/" + introducCode + "/" + "/" + UID)}
+            {console.log(phoneNumber + "/" + name + "/" + email + "/" + introducCode + "/" + UID)}
             {/* Title */}
             <Text style={styles.p}>Vui lòng nhập mật khẩu. Mật khẩu này sẽ được sử dụng cho lần đăng nhập sau</Text>
 

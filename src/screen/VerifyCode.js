@@ -7,8 +7,9 @@ import database from '@react-native-firebase/database'
 
 const VerifyCode = ({ navigation, route }) => {
     let clockCall = null
+    let iud = ''
     const defaultCountdown = 30
-    const { UID, setUID } = useState()
+    const [UID, setUID] = useState()
     const [verifyCode, setVerifyCode] = useState("1")
     const [countdown, setCountdown] = useState(defaultCountdown)
     const [confirm, setConfirm] = useState(null);
@@ -40,23 +41,25 @@ const VerifyCode = ({ navigation, route }) => {
     // Confirm OTP
     const confirmCode = async (code) => {
         try {
-            await confirm.confirm(code);
+            await confirm.confirm(code)
             setUID(confirm._auth._user.uid)
         } catch (error) {
             Alert('Mã xác nhận hoặc số điện thoại không đúng')
         }
     }
 
-    const onVerifiCode = () => {
+    useEffect(() => {
         confirmCode(verifyCode)
-        // navigation.navigate('Đặt mật khẩu', {
-        //     phoneNumber: phoneNumber,
-        //     name: name,
-        //     email: email,
-        //     introducCode: introducCode,
-        //     UID: UID
-        // })
-        console.log(UID);
+    })
+    const onVerifiCode = () => {
+
+        navigation.navigate('Đặt mật khẩu', {
+            phoneNumber: phoneNumber,
+            name: name,
+            email: email,
+            introducCode: introducCode,
+            UID: UID
+        })
     }
 
     useEffect(() => {
