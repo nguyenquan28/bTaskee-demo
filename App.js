@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Register from './src/screen/Register';
 import VerifyCode from './src/screen/VerifyCode';
+import SetPassword from './src/screen/SetPassword';
 const App = () => {
 
   const Stack = createStackNavigator()
@@ -22,6 +23,10 @@ const App = () => {
         <Stack.Screen
           name='Xác thực tài khoản'
           component={VerifyCode}
+        />
+        <Stack.Screen
+          name='Đặt mật khẩu'
+          component={SetPassword}
         />
       </Stack.Navigator>
     </NavigationContainer>

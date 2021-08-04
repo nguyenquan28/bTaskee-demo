@@ -2,9 +2,9 @@ import React from 'react'
 import { useState } from 'react'
 import { View, Text, StyleSheet, SafeAreaView, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import firebaseSetup from '../firebase/setup'
+import auth from '@react-native-firebase/auth'
 
-const Register = ({ navigation }) => {
+const Register = ({ navigation, route }) => {
 
     // Require image
     const VN = require('../assets/images/vn.png')
@@ -13,8 +13,7 @@ const Register = ({ navigation }) => {
     const HK = require('../assets/images/HK.png')
 
     // Create var
-    const { auth } = firebaseSetup()
-    const [confirm, setConfirm] = useState(null)
+    const [info, setInfo] = useState({})
     const [phoneNumber, setPhoneNumber] = useState()
     const [name, setName] = useState()
     const [email, setEmail] = useState()
@@ -22,9 +21,14 @@ const Register = ({ navigation }) => {
 
     // Create account with phone number
     const signInWithPhoneNumber = async (phoneNumber) => {
-        // const confirmation = await auth().signInWithPhoneNumber(phoneNumber)
-        // setConfirm(confirmation)
-        navigation.replace('Xác thực tài khoản')
+        const confirmation = await auth().signInWithPhoneNumber(phoneNumber)
+        navigation.navigate('Xác thực tài khoản', {
+            phoneNumber: phoneNumber,
+            name: name,
+            email: email,
+            introducCode: introducCode,
+            confirmation: confirmation
+        })
     }
 
     return (
@@ -108,7 +112,7 @@ const Register = ({ navigation }) => {
                 <TouchableOpacity
                     onPress={() => signInWithPhoneNumber(phoneNumber)}
                 >
-                    <View style={styles.footerRight}>
+                    <View style={[styles.footerRight, { backgroundColor: (name && phoneNumber) ? '#47d173' : '#ebebeb' }]}>
                         <Ionicons name={'chevron-forward'} size={40} color={'#fff'} />
                     </View>
                 </TouchableOpacity>
@@ -119,7 +123,6 @@ const Register = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        // flex: 1000,
         backgroundColor: '#fff',
         padding: 20
     },
@@ -211,14 +214,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         paddingHorizontal: 20,
         flexDirection: 'row',
-        paddingBottom: 30
-    },
-
-    footerLeft: {
+        paddingBottom: 30,
+        paddingTop: 20,
     },
 
     footerRight: {
-        backgroundColor: '#ebebeb',
         justifyContent: 'center',
         marginLeft: 10,
         padding: 10,

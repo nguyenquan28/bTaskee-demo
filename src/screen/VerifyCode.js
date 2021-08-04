@@ -1,14 +1,24 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import OTPInputView from '@twotalltotems/react-native-otp-input'
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import auth from '@react-native-firebase/auth'
+import database from '@react-native-firebase/database'
 
-const VerifyCode = ({ navigation }) => {
+const VerifyCode = ({ navigation, route }) => {
     let clockCall = null
     const defaultCountdown = 30
-    const [verifyCode, setVerifyCode] = useState()
+    const { UID, setUID } = useState()
+    const [verifyCode, setVerifyCode] = useState("1")
     const [countdown, setCountdown] = useState(defaultCountdown)
+    const [confirm, setConfirm] = useState(null);
+    const { phoneNumber } = route.params
+    const { name } = route.params
+    const { email } = route.params
+    const { introducCode } = route.params
+    const { confirmation } = route.params
 
+    // Countdown OTP
     useEffect(() => {
         clockCall = setInterval(() => {
             decrementClock();
@@ -27,6 +37,32 @@ const VerifyCode = ({ navigation }) => {
         }
     }
 
+    // Confirm OTP
+    const confirmCode = async (code) => {
+        try {
+            await confirm.confirm(code);
+            setUID(confirm._auth._user.uid)
+        } catch (error) {
+            Alert('Mã xác nhận hoặc số điện thoại không đúng')
+        }
+    }
+
+    const onVerifiCode = () => {
+        confirmCode(verifyCode)
+        // navigation.navigate('Đặt mật khẩu', {
+        //     phoneNumber: phoneNumber,
+        //     name: name,
+        //     email: email,
+        //     introducCode: introducCode,
+        //     UID: UID
+        // })
+        console.log(UID);
+    }
+
+    useEffect(() => {
+        setConfirm(confirmation)
+    }, [confirmation])
+
     return (
         <View style={styles.container}>
             {/* Title */}
@@ -35,22 +71,27 @@ const VerifyCode = ({ navigation }) => {
             <View style={styles.containerInput}>
                 <OTPInputView
                     style={styles.rowOTP}
-                    pinCount={4}
+                    pinCount={6}
                     onCodeChanged={code => setVerifyCode(code)}
                     autoFocusOnLoad
                     codeInputFieldStyle={styles.underlineStyleBase}
                     codeInputHighlightStyle={styles.underlineStyleHighLighted}
-                    onCodeFilled={(verifyCode => {
-                        console.log(`Code is ${verifyCode}, you are good to go!`)
-                    })}
                 />
             </View>
 
+            {/* Footer */}
             <View style={styles.footer}>
+                {/* Countdown OTP */}
                 <Text style={styles.p}>00:{countdown}</Text>
-                <View style={styles.footerRight}>
-                    <Ionicons name={'chevron-forward'} size={40} color={'#fff'} />
-                </View>
+
+                {/* VerifyCode */}
+                <TouchableOpacity
+                    onPress={onVerifiCode}
+                >
+                    <View style={[styles.footerRight, { backgroundColor: (verifyCode.length === 6) ? '#47d173' : '#ebebeb' }]}>
+                        <Ionicons name={'chevron-forward'} size={40} color={'#fff'} />
+                    </View>
+                </TouchableOpacity>
             </View>
         </View>
     )

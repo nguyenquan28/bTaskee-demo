@@ -13,34 +13,38 @@ const Login = ({ navigation }) => {
     const USA = require('../assets/images/usa.png')
     const HK = require('../assets/images/HK.png')
 
-
+    // Constructor
     const [confirm, setConfirm] = useState(null);
     const [visible, setVisible] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState()
     const [code, setCode] = useState()
     const [error, setError] = useState("")
-    // const { login } = useContext(AuthContext);
 
     // Method SignIn
     const signInWithPhoneNumber = async (phoneNumber) => {
 
         // Get OTP code
         const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-        setConfirm(confirmation);
+        try {
+            setError('')
 
-        // Verify OTP code
-        showDialog()
+            // Verify OTP code
+            setConfirm(confirmation);
+            showDialog()
+        } catch (error) {
+            setError('Số điện thoại không đúng.')
+        }
     }
 
     // Confirm OTP
     const confirmCode = async (code) => {
         try {
             await confirm.confirm(code);
-            console.log('success');
+            setError('')
             handleCancel()
         } catch (error) {
-            console.log(code);
-            console.log('Invalid code.');
+            setError('Mã xác nhận hoặc số điện thoại không đúng')
+            handleCancel()
         }
     }
 
@@ -84,6 +88,9 @@ const Login = ({ navigation }) => {
                     />
                 </View>
 
+                {/* Error */}
+                <Text style={styles.error}>{error}</Text>
+
                 {/* Password */}
                 <Text style={styles.titleInput}>Mật khẩu</Text>
                 <TextInput
@@ -107,6 +114,8 @@ const Login = ({ navigation }) => {
                 <View style={styles.footer}>
                     <View style={styles.register}>
                         <Text style={styles.p}>Bạn chưa có tài khoản?</Text>
+
+                        {/* onRegister */}
                         <TouchableOpacity
                             onPress={() => navigation.navigate('Đăng ký')}
                         >
@@ -114,6 +123,7 @@ const Login = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
 
+                    {/* onForgot Password */}
                     <TouchableOpacity style={styles.forgotPass}>
                         <Text style={styles.textLink}>Quên mật khẩu</Text>
                     </TouchableOpacity>
@@ -165,6 +175,13 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         color: '#524e4e'
+    },
+
+    error: {
+        color: 'red',
+        marginTop: -20,
+        marginBottom: 10,
+        alignSelf: 'flex-end'
     },
 
     flag: {

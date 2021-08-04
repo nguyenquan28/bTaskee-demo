@@ -1,0 +1,122 @@
+{
+    "_auth": {
+        "_app": {
+            "_automaticDataCollectionEnabled": true,
+            "_deleteApp": [Function bound deleteApp
+            ],
+            "_deleted": false,
+            "_initialized": true,
+            "_name": "[DEFAULT]",
+            "_nativeInitialized": true,
+            "_options": [Object
+            ]
+        },
+        "_authResult": true,
+        "_config": {
+            "ModuleClass": [Function FirebaseAuthModule
+            ],
+            "hasCustomUrlOrRegionSupport": false,
+            "hasMultiAppSupport": true,
+            "namespace": "auth",
+            "nativeEvents": [Array
+            ],
+            "nativeModuleName": "RNFBAuthModule",
+            "statics": [Object
+            ],
+            "version": "12.4.0"
+        },
+        "_customUrlOrRegion": undefined,
+        "_languageCode": null,
+        "_nativeModule": {
+            "APP_LANGUAGE": [Object
+            ],
+            "APP_USER": [Object
+            ],
+            "addAuthStateListener": [Function anonymous
+            ],
+            "addIdTokenListener": [Function anonymous
+            ],
+            "applyActionCode": [Function anonymous
+            ],
+            "checkActionCode": [Function anonymous
+            ],
+            "confirmPasswordReset": [Function anonymous
+            ],
+            "confirmationResultConfirm": [Function anonymous
+            ],
+            "createUserWithEmailAndPassword": [Function anonymous
+            ],
+            "delete": [Function anonymous
+            ],
+            "fetchSignInMethodsForEmail": [Function anonymous
+            ],
+            "getConstants": [Function anonymous
+            ],
+            "getIdToken": [Function anonymous
+            ],
+            "getIdTokenResult": [Function anonymous
+            ],
+            "linkWithCredential": [Function anonymous
+            ],
+            "reauthenticateWithCredential": [Function anonymous
+            ],
+            "reload": [Function anonymous
+            ],
+            "removeAuthStateListener": [Function anonymous
+            ],
+            "removeIdTokenListener": [Function anonymous
+            ],
+            "sendEmailVerification": [Function anonymous
+            ],
+            "sendPasswordResetEmail": [Function anonymous
+            ],
+            "sendSignInLinkToEmail": [Function anonymous
+            ],
+            "setAutoRetrievedSmsCodeForPhoneNumber": [Function anonymous
+            ],
+            "setLanguageCode": [Function anonymous
+            ],
+            "setTenantId": [Function anonymous
+            ],
+            "signInAnonymously": [Function anonymous
+            ],
+            "signInWithCredential": [Function anonymous
+            ],
+            "signInWithCustomToken": [Function anonymous
+            ],
+            "signInWithEmailAndPassword": [Function anonymous
+            ],
+            "signInWithEmailLink": [Function anonymous
+            ],
+            "signInWithPhoneNumber": [Function anonymous
+            ],
+            "signOut": [Function anonymous
+            ],
+            "unlink": [Function anonymous
+            ],
+            "updateEmail": [Function anonymous
+            ],
+            "updatePassword": [Function anonymous
+            ],
+            "updatePhoneNumber": [Function anonymous
+            ],
+            "updateProfile": [Function anonymous
+            ],
+            "useDeviceLanguage": [Function anonymous
+            ],
+            "useEmulator": [Function anonymous
+            ],
+            "verifyBeforeUpdateEmail": [Function anonymous
+            ],
+            "verifyPasswordResetCode": [Function anonymous
+            ],
+            "verifyPhoneNumber": [Function anonymous
+            ]
+        },
+        "_settings": null,
+        "_tenantId": null,
+        "_user": [Object
+        ]
+    },
+    "_verificationId": "AJOnW4SXymkpkRadNgO938ZDlRvUrlzBDN9alB8oMTm9HUOu9k1d1Xgj5i9xdLNpcYTVR__0x3KLuhkI2sukdpB4Pdkpzk9Ji1AkpUUzJwwNvP_PcEOPv-_tGfbkrDNdIlGkDKvpFMaRQGEBdYVMLD-rbNaarTqKzg"
+}
