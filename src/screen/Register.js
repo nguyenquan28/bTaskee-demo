@@ -13,10 +13,10 @@ const Register = ({ navigation, route }) => {
     const HK = require('../assets/images/HK.png')
 
     // Create var
-    const [phoneNumber, setPhoneNumber] = useState('+84397411511')
-    const [name, setName] = useState('Quan')
-    const [email, setEmail] = useState('nvquan.itdn@gmail.com')
-    const [introducCode, setIntroducCode] = useState('abcxyz')
+    const [phoneNumber, setPhoneNumber] = useState('')
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [introducCode, setIntroducCode] = useState('')
 
     // Create account with phone number
     const signInWithPhoneNumber = async (phoneNumber) => {

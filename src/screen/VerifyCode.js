@@ -1,13 +1,10 @@
+import OTPInputView from '@twotalltotems/react-native-otp-input'
 import React, { useEffect, useState } from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import OTPInputView from '@twotalltotems/react-native-otp-input'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import auth from '@react-native-firebase/auth'
-import database from '@react-native-firebase/database'
 
 const VerifyCode = ({ navigation, route }) => {
     let clockCall = null
-    let iud = ''
     const defaultCountdown = 30
     const [UID, setUID] = useState()
     const [verifyCode, setVerifyCode] = useState("1")
@@ -51,8 +48,9 @@ const VerifyCode = ({ navigation, route }) => {
     useEffect(() => {
         confirmCode(verifyCode)
     })
-    const onVerifiCode = () => {
 
+    // Go to SetPassword
+    const onVerifiCode = () => {
         navigation.navigate('Đặt mật khẩu', {
             phoneNumber: phoneNumber,
             name: name,

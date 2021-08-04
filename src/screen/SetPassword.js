@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native'
+import firestore from '@react-native-firebase/firestore';
+import React, { useState } from 'react';
+import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
 
 const SetPassword = ({ navigation, route }) => {
 
@@ -10,13 +11,25 @@ const SetPassword = ({ navigation, route }) => {
     const { introducCode } = route.params
     const { UID } = route.params
 
-    const onCreateAccount = () => {
-        alert('success')
+    // Add to firebase
+    const addUser = async () => {
+        firestore().collection('users').add({
+            email: email,
+            introducCode: introducCode,
+            name: name,
+            password: password,
+            phoneNumber: phoneNumber,
+            uid: UID
+        })
+    }
+
+    const hanldeAddUser = () => {
+        addUser()
     }
 
     return (
         <SafeAreaView style={styles.container}>
-            {console.log(phoneNumber + "/" + name + "/" + email + "/" + introducCode + "/" + UID)}
+
             {/* Title */}
             <Text style={styles.p}>Vui lòng nhập mật khẩu. Mật khẩu này sẽ được sử dụng cho lần đăng nhập sau</Text>
 
@@ -33,7 +46,7 @@ const SetPassword = ({ navigation, route }) => {
             {/* Button */}
             <TouchableOpacity
                 style={[styles.btnSave, { backgroundColor: password.length > 6 ? '#47d173' : '#ebebeb' }]}
-            // onPress={onCreateAccount}
+                onPress={hanldeAddUser}
             >
                 <Text style={[styles.p, { color: '#fff', fontWeight: 'bold' }]}>Hoàn thành</Text>
             </TouchableOpacity>
@@ -64,7 +77,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         backgroundColor: 'white',
         marginBottom: 30,
-        color: '#ddd',
+        color: 'black',
     },
 
     error: {
