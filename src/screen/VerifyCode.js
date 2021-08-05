@@ -2,6 +2,7 @@ import OTPInputView from '@twotalltotems/react-native-otp-input'
 import React, { useEffect, useState } from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import auth from '@react-native-firebase/auth'
 
 const VerifyCode = ({ navigation, route }) => {
     let clockCall = null
@@ -10,6 +11,7 @@ const VerifyCode = ({ navigation, route }) => {
     const [verifyCode, setVerifyCode] = useState("1")
     const [countdown, setCountdown] = useState(defaultCountdown)
     const [confirm, setConfirm] = useState(null);
+
     const { phoneNumber } = route.params
     const { name } = route.params
     const { email } = route.params
@@ -35,39 +37,50 @@ const VerifyCode = ({ navigation, route }) => {
         }
     }
 
+    // Send OTP code
+    const signInWithPhoneNumber = async (phoneNumber) => {
+        const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+        try {
+            console.log(confirmation);
+            setConfirm(confirmation);
+        } catch (error) {
+            Alert('Số điện thoại không đúng.')
+        }
+    }
+
     // Confirm OTP
     const confirmCode = async (code) => {
         try {
             await confirm.confirm(code)
             setUID(confirm._auth._user.uid)
+            console.log(confirm._auth._user)
         } catch (error) {
             Alert('Mã xác nhận hoặc số điện thoại không đúng')
         }
     }
 
-    useEffect(() => {
-        confirmCode(verifyCode)
-    })
-
     // Go to SetPassword
     const onVerifiCode = () => {
-        navigation.navigate('Đặt mật khẩu', {
-            phoneNumber: phoneNumber,
-            name: name,
-            email: email,
-            introducCode: introducCode,
-            UID: UID
-        })
+        if (verifyCode.length === 6) {
+            confirmCode(verifyCode)
+            navigation.navigate('Đặt mật khẩu', {
+                phoneNumber: phoneNumber,
+                name: name,
+                email: email,
+                introducCode: introducCode,
+                UID: UID
+            })
+        }
     }
 
     useEffect(() => {
-        setConfirm(confirmation)
-    }, [confirmation])
+        signInWithPhoneNumber(phoneNumber)
+    }, [phoneNumber])
 
     return (
         <View style={styles.container}>
             {/* Title */}
-            <Text style={styles.p}>Nhận mã kích hoạt gồm 4 chữ số đã được gửi đến số điện thoại của bạn.</Text>
+            <Text style={styles.p}>Nhận mã kích hoạt gồm 6 chữ số đã được gửi đến số điện thoại của bạn.</Text>
 
             <View style={styles.containerInput}>
                 <OTPInputView

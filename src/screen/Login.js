@@ -1,34 +1,37 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useState } from 'react'
 import { Alert, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
 import Dialog from "react-native-dialog";
+import RBSheet from "react-native-raw-bottom-sheet";
 
 const Login = ({ navigation }) => {
 
     // Require image
     const VN = require('../assets/images/vn.png')
-    const THAI = require('../assets/images/thai.jpg')
-    const USA = require('../assets/images/usa.png')
+    const TH = require('../assets/images/thai.jpg')
+    const US = require('../assets/images/usa.png')
     const HK = require('../assets/images/HK.png')
 
     // Constructor
+    const refRBSheet = useRef();
     const [confirm, setConfirm] = useState(null);
     const [visible, setVisible] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState()
     const [code, setCode] = useState()
     const [error, setError] = useState("")
+    const [areaNumber, setAreaNumber] = useState('+84')
+    const [flag, setFlag] = useState(VN)
 
     // Method SignIn
-    const signInWithPhoneNumber = async (phoneNumber) => {
-
+    const signInWithPhoneNumber = async (areaNumber, phoneNumber) => {
+        let phone = areaNumber + phoneNumber
+        console.log(phone);
         // Get OTP code
-        const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+        const confirmation = await auth().signInWithPhoneNumber(phone);
         try {
             setError('')
-
-            // Verify OTP code
             setConfirm(confirmation);
             showDialog()
         } catch (error) {
@@ -58,6 +61,13 @@ const Login = ({ navigation }) => {
         setVisible(false);
     };
 
+    // Select Area number
+    const hanldeAreaNumber = (code, flag) => {
+        setAreaNumber(code)
+        setFlag(flag)
+        refRBSheet.current.close()
+    }
+
     return (
         <SafeAreaView>
             <View style={styles.container}>
@@ -71,10 +81,12 @@ const Login = ({ navigation }) => {
                 {/* Phone number */}
                 <Text style={styles.titleInput}>Số điện thoại</Text>
                 <View style={styles.phoneArea}>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => refRBSheet.current.open()}
+                    >
                         <View style={styles.areaNumber}>
-                            <Image style={styles.flag} source={VN} />
-                            <Text style={[styles.p, { marginHorizontal: 5 }]}>+84</Text>
+                            <Image style={styles.flag} source={flag} />
+                            <Text style={[styles.p, { marginHorizontal: 5 }]}>{areaNumber}</Text>
                             <Ionicons name={'caret-down'} size={20} color={'#4f4f4f'} />
                         </View>
                     </TouchableOpacity>
@@ -104,7 +116,7 @@ const Login = ({ navigation }) => {
 
                 {/* Button */}
                 <TouchableOpacity
-                    onPress={() => signInWithPhoneNumber(phoneNumber)}
+                    onPress={() => signInWithPhoneNumber(areaNumber, phoneNumber)}
                     style={styles.btnLogin}
                 >
                     <Text style={styles.textLogin}>Đăng nhập</Text>
@@ -139,6 +151,64 @@ const Login = ({ navigation }) => {
                 <Dialog.Button label="Hủy" onPress={handleCancel} />
                 <Dialog.Button label="Xác nhận" onPress={() => confirmCode(code)} />
             </Dialog.Container>
+
+            {/* AreaCode */}
+            <RBSheet
+                ref={refRBSheet}
+                closeOnDragDown={true}
+                closeOnPressMask={false}
+                customStyles={{
+                    wrapper: {
+                        backgroundColor: "#bfbbbb",
+                        opacity: 0.8
+                    },
+                    draggableIcon: {
+                        backgroundColor: "#000",
+                        marginBottom: 20
+                    }
+                }}
+            >
+                {/* Viet Nam */}
+                <TouchableOpacity
+                    onPress={() => hanldeAreaNumber('+84', VN)}
+                >
+                    <View style={styles.AreaCode}>
+                        <Image style={styles.flag} source={VN} />
+                        <Text style={[styles.p, { marginHorizontal: 20 }]}>VN +84</Text>
+                    </View>
+                </TouchableOpacity>
+
+                {/* Thailand */}
+                <TouchableOpacity
+                    onPress={() => hanldeAreaNumber('+66', TH)}
+                >
+                    <View style={styles.AreaCode}>
+                        <Image style={styles.flag} source={TH} />
+                        <Text style={[styles.p, { marginHorizontal: 20 }]}>TH +66</Text>
+                    </View>
+                </TouchableOpacity>
+
+                {/* HongKong */}
+                <TouchableOpacity
+                    onPress={() => hanldeAreaNumber('+852', HK)}
+                >
+                    <View style={styles.AreaCode}>
+                        <Image style={styles.flag} source={HK} />
+                        <Text style={[styles.p, { marginHorizontal: 20 }]}>HK +852</Text>
+                    </View>
+                </TouchableOpacity>
+
+                {/* US */}
+                <TouchableOpacity
+                    onPress={() => hanldeAreaNumber('+1', US)}
+                >
+                    <View style={styles.AreaCode}>
+                        <Image style={styles.flag} source={US} />
+                        <Text style={[styles.p, { marginHorizontal: 20 }]}>US +1</Text>
+                    </View>
+                </TouchableOpacity>
+            </RBSheet>
+
         </SafeAreaView>
     )
 }
@@ -203,6 +273,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         marginRight: 10,
+    },
+
+    AreaCode: {
+        flexDirection: 'row',
+        marginHorizontal: 40,
+        marginBottom: 30,
+        alignItems: 'center'
     },
 
     input: {

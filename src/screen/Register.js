@@ -1,33 +1,42 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useState } from 'react'
 import { View, Text, StyleSheet, SafeAreaView, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import auth from '@react-native-firebase/auth'
+import RBSheet from "react-native-raw-bottom-sheet";
 
 const Register = ({ navigation, route }) => {
 
     // Require image
     const VN = require('../assets/images/vn.png')
-    const THAI = require('../assets/images/thai.jpg')
-    const USA = require('../assets/images/usa.png')
+    const TH = require('../assets/images/thai.jpg')
+    const US = require('../assets/images/usa.png')
     const HK = require('../assets/images/HK.png')
 
     // Create var
+    const refRBSheet = useRef();
     const [phoneNumber, setPhoneNumber] = useState('')
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [introducCode, setIntroducCode] = useState('')
+    const [areaNumber, setAreaNumber] = useState('+84')
+    const [flag, setFlag] = useState(VN)
 
     // Create account with phone number
-    const signInWithPhoneNumber = async (phoneNumber) => {
-        const confirmation = await auth().signInWithPhoneNumber(phoneNumber)
+    const signInWithPhoneNumber = async (areaNumber, phoneNumber) => {
+        let phone = areaNumber + phoneNumber
         navigation.navigate('Xác thực tài khoản', {
-            phoneNumber: phoneNumber,
+            phoneNumber: phone,
             name: name,
             email: email,
             introducCode: introducCode,
-            confirmation: confirmation
         })
+    }
+
+    // Select Area number
+    const hanldeAreaNumber = (code, flag) => {
+        setAreaNumber(code)
+        setFlag(flag)
+        refRBSheet.current.close()
     }
 
     return (
@@ -55,10 +64,12 @@ const Register = ({ navigation, route }) => {
                 {/* Phone number */}
                 <Text style={styles.titleInput}>Số điện thoại</Text>
                 <View style={styles.phoneArea}>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => refRBSheet.current.open()}
+                    >
                         <View style={styles.areaNumber}>
-                            <Image style={styles.flag} source={VN} />
-                            <Text style={[styles.p, { marginHorizontal: 5 }]}>+84</Text>
+                            <Image style={styles.flag} source={flag} />
+                            <Text style={[styles.p, { marginHorizontal: 5 }]}>{areaNumber}</Text>
                             <Ionicons name={'caret-down'} size={20} color={'#4f4f4f'} />
                         </View>
                     </TouchableOpacity>
@@ -109,13 +120,73 @@ const Register = ({ navigation, route }) => {
                 </View>
 
                 <TouchableOpacity
-                    onPress={() => signInWithPhoneNumber(phoneNumber)}
+                    onPress={() => signInWithPhoneNumber(areaNumber, phoneNumber)}
                 >
                     <View style={[styles.footerRight, { backgroundColor: (name && phoneNumber) ? '#47d173' : '#ebebeb' }]}>
                         <Ionicons name={'chevron-forward'} size={40} color={'#fff'} />
                     </View>
                 </TouchableOpacity>
             </View>
+
+
+            {/* AreaCode */}
+            <RBSheet
+                ref={refRBSheet}
+                closeOnDragDown={true}
+                closeOnPressMask={false}
+                customStyles={{
+                    wrapper: {
+                        backgroundColor: "#bfbbbb",
+                        opacity: 0.8
+                    },
+                    draggableIcon: {
+                        backgroundColor: "#000",
+                        marginBottom: 20
+                    }
+                }}
+            >
+                {/* Viet Nam */}
+                <TouchableOpacity
+                    onPress={() => hanldeAreaNumber('+84', VN)}
+                >
+                    <View style={styles.AreaCode}>
+                        <Image style={styles.flag} source={VN} />
+                        <Text style={[styles.p, { marginHorizontal: 20 }]}>VN +84</Text>
+                    </View>
+                </TouchableOpacity>
+
+                {/* Thailand */}
+                <TouchableOpacity
+                    onPress={() => hanldeAreaNumber('+66', TH)}
+                >
+                    <View style={styles.AreaCode}>
+                        <Image style={styles.flag} source={TH} />
+                        <Text style={[styles.p, { marginHorizontal: 20 }]}>TH +66</Text>
+                    </View>
+                </TouchableOpacity>
+
+                {/* HongKong */}
+                <TouchableOpacity
+                    onPress={() => hanldeAreaNumber('+852', HK)}
+                >
+                    <View style={styles.AreaCode}>
+                        <Image style={styles.flag} source={HK} />
+                        <Text style={[styles.p, { marginHorizontal: 20 }]}>HK +852</Text>
+                    </View>
+                </TouchableOpacity>
+
+                {/* US */}
+                <TouchableOpacity
+                    onPress={() => hanldeAreaNumber('+1', US)}
+                >
+                    <View style={styles.AreaCode}>
+                        <Image style={styles.flag} source={US} />
+                        <Text style={[styles.p, { marginHorizontal: 20 }]}>US +1</Text>
+                    </View>
+                </TouchableOpacity>
+            </RBSheet>
+
+
         </SafeAreaView>
     )
 }
@@ -164,6 +235,13 @@ const styles = StyleSheet.create({
         width: 25,
         height: 20,
         marginLeft: 5
+    },
+
+    AreaCode: {
+        flexDirection: 'row',
+        marginHorizontal: 40,
+        marginBottom: 30,
+        alignItems: 'center'
     },
 
     areaNumber: {
