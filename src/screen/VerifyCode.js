@@ -6,17 +6,17 @@ import auth from '@react-native-firebase/auth'
 
 const VerifyCode = ({ navigation, route }) => {
     let clockCall = null
+    let id = ''
     const defaultCountdown = 30
     const [UID, setUID] = useState()
-    const [verifyCode, setVerifyCode] = useState("1")
+    const [verifyCode, setVerifyCode] = useState("")
     const [countdown, setCountdown] = useState(defaultCountdown)
     const [confirm, setConfirm] = useState(null);
 
     const { phoneNumber } = route.params
     const { name } = route.params
     const { email } = route.params
-    const { introducCode } = route.params
-    const { confirmation } = route.params
+    const { introCode } = route.params
 
     // Countdown OTP
     useEffect(() => {
@@ -41,7 +41,7 @@ const VerifyCode = ({ navigation, route }) => {
     const signInWithPhoneNumber = async (phoneNumber) => {
         const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
         try {
-            console.log(confirmation);
+            // console.log(confirmation);
             setConfirm(confirmation);
         } catch (error) {
             Alert('Số điện thoại không đúng.')
@@ -52,23 +52,23 @@ const VerifyCode = ({ navigation, route }) => {
     const confirmCode = async (code) => {
         try {
             await confirm.confirm(code)
-            setUID(confirm._auth._user.uid)
-            console.log(confirm._auth._user)
+            id = confirm._auth._user.uid
         } catch (error) {
-            Alert('Mã xác nhận hoặc số điện thoại không đúng')
+            Alert('Mã xác nhận số điện thoại không đúng')
         }
     }
 
     // Go to SetPassword
-    const onVerifiCode = () => {
+    const onVerifiCode = async () => {
         if (verifyCode.length === 6) {
-            confirmCode(verifyCode)
+            await confirmCode(verifyCode)
+            // console.log(email + introCode + name + phoneNumber + UID)
             navigation.navigate('Đặt mật khẩu', {
                 phoneNumber: phoneNumber,
                 name: name,
                 email: email,
-                introducCode: introducCode,
-                UID: UID
+                introCode: introCode,
+                UID: id
             })
         }
     }

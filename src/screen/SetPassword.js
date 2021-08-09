@@ -8,14 +8,14 @@ const SetPassword = ({ navigation, route }) => {
     const { phoneNumber } = route.params
     const { name } = route.params
     const { email } = route.params
-    const { introducCode } = route.params
+    const { introCode } = route.params
     const { UID } = route.params
 
     // Add to firebase
     const addUser = async () => {
         firestore().collection('users').add({
             email: email,
-            introducCode: introducCode,
+            introCode: introCode,
             name: name,
             password: password,
             phoneNumber: phoneNumber,
@@ -23,8 +23,12 @@ const SetPassword = ({ navigation, route }) => {
         })
     }
 
-    const hanldeAddUser = () => {
-        addUser()
+    const handleAddUser = () => {
+        if (password.length > 6) {
+            addUser()
+            navigation.replace('Đăng nhập')
+            console.log(email + introCode + name + password + phoneNumber + UID);
+        }
     }
 
     return (
@@ -46,7 +50,7 @@ const SetPassword = ({ navigation, route }) => {
             {/* Button */}
             <TouchableOpacity
                 style={[styles.btnSave, { backgroundColor: password.length > 6 ? '#47d173' : '#ebebeb' }]}
-                onPress={hanldeAddUser}
+                onPress={handleAddUser}
             >
                 <Text style={[styles.p, { color: '#fff', fontWeight: 'bold' }]}>Hoàn thành</Text>
             </TouchableOpacity>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { SafeAreaView } from 'react-native'
+import { SafeAreaView, Text } from 'react-native'
 
 const Home = ({ navigation }) => {
     return (
@@ -10,3 +10,4 @@ const Home = ({ navigation }) => {
         </SafeAreaView>
     )
 }
+export default Home;

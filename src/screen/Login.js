@@ -2,6 +2,7 @@ import React, { useRef } from 'react'
 import { useState } from 'react'
 import { Alert, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import firestore from '@react-native-firebase/firestore'
 import auth from '@react-native-firebase/auth';
 import Dialog from "react-native-dialog";
 import RBSheet from "react-native-raw-bottom-sheet";
@@ -16,10 +17,8 @@ const Login = ({ navigation }) => {
 
     // Constructor
     const refRBSheet = useRef();
-    const [confirm, setConfirm] = useState(null);
-    const [visible, setVisible] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState()
-    const [code, setCode] = useState()
+    const [password, setPassword] = useState()
     const [error, setError] = useState("")
     const [areaNumber, setAreaNumber] = useState('+84')
     const [flag, setFlag] = useState(VN)
@@ -27,39 +26,26 @@ const Login = ({ navigation }) => {
     // Method SignIn
     const signInWithPhoneNumber = async (areaNumber, phoneNumber) => {
         let phone = areaNumber + phoneNumber
-        console.log(phone);
-        // Get OTP code
-        const confirmation = await auth().signInWithPhoneNumber(phone);
-        try {
-            setError('')
-            setConfirm(confirmation);
-            showDialog()
-        } catch (error) {
-            setError('Số điện thoại không đúng.')
+        if (!phoneNumber || !password) {
+            setError('Vui lòng nhập đầy đủ thông tin')
+        } else {
+            let users = await firestore().collection('users')
+                .where('phoneNumber', '==', phone)
+                .get()
+                .then(querySnapshot => {
+                    querySnapshot.forEach((doc) => {
+                        console.log(doc._data.password);
+                        if (doc._data.password == password) {
+                            setError('')
+                            navigation.replace('Trang chủ')
+                        } else {
+                            setError('Vui lòng kiểm tra lại số điện thoại và mật khẩu.')
+
+                        }
+                    })
+                })
         }
     }
-
-    // Confirm OTP
-    const confirmCode = async (code) => {
-        try {
-            await confirm.confirm(code);
-            setError('')
-            handleCancel()
-        } catch (error) {
-            setError('Mã xác nhận hoặc số điện thoại không đúng')
-            handleCancel()
-        }
-    }
-
-    // Show alert
-    const showDialog = () => {
-        setVisible(true);
-    };
-
-    // Hide alert
-    const handleCancel = () => {
-        setVisible(false);
-    };
 
     // Select Area number
     const hanldeAreaNumber = (code, flag) => {
@@ -100,19 +86,19 @@ const Login = ({ navigation }) => {
                     />
                 </View>
 
-                {/* Error */}
-                <Text style={styles.error}>{error}</Text>
-
                 {/* Password */}
                 <Text style={styles.titleInput}>Mật khẩu</Text>
                 <TextInput
                     style={styles.input}
-                    // onChangeText={setPassword}
+                    onChangeText={setPassword}
                     placeholderText="Password"
                     iconType="lock"
                     secureTextEntry={true}
                     borderColor={'#bdbdbd'}
                 />
+
+                {/* Error */}
+                <Text style={styles.error}>{error}</Text>
 
                 {/* Button */}
                 <TouchableOpacity
@@ -141,16 +127,6 @@ const Login = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-
-            {/* Alert */}
-            <Dialog.Container visible={visible}>
-                <Dialog.Title>Xác nhận mã OTP</Dialog.Title>
-                <Dialog.Input
-                    onChangeText={setCode}
-                />
-                <Dialog.Button label="Hủy" onPress={handleCancel} />
-                <Dialog.Button label="Xác nhận" onPress={() => confirmCode(code)} />
-            </Dialog.Container>
 
             {/* AreaCode */}
             <RBSheet
@@ -250,7 +226,7 @@ const styles = StyleSheet.create({
     error: {
         color: 'red',
         marginTop: -20,
-        marginBottom: 10,
+        marginBottom: 30,
         alignSelf: 'flex-end'
     },
 
@@ -284,7 +260,7 @@ const styles = StyleSheet.create({
 
     input: {
         fontSize: 18,
-        minWidth: 250,
+        minWidth: 227,
         height: 60,
         borderWidth: 1,
         marginTop: 10,

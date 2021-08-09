@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { View, Text, StyleSheet, SafeAreaView, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RBSheet from "react-native-raw-bottom-sheet";
+import firestore from '@react-native-firebase/firestore'
 
 const Register = ({ navigation, route }) => {
 
@@ -13,23 +14,42 @@ const Register = ({ navigation, route }) => {
     const HK = require('../assets/images/HK.png')
 
     // Create var
+    let listPhoneNumber = []
     const refRBSheet = useRef();
     const [phoneNumber, setPhoneNumber] = useState('')
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
-    const [introducCode, setIntroducCode] = useState('')
+    const [introCode, setIntroCode] = useState('')
+    const [error, setError] = useState('')
     const [areaNumber, setAreaNumber] = useState('+84')
     const [flag, setFlag] = useState(VN)
 
     // Create account with phone number
-    const signInWithPhoneNumber = async (areaNumber, phoneNumber) => {
+    const onRegister = async (areaNumber, phoneNumber) => {
         let phone = areaNumber + phoneNumber
-        navigation.navigate('Xác thực tài khoản', {
-            phoneNumber: phone,
-            name: name,
-            email: email,
-            introducCode: introducCode,
-        })
+        await getPhoneNumber(phone)
+        if (name && phoneNumber) {
+            if (Array.isArray(listPhoneNumber._docs) && listPhoneNumber._docs.length) {
+                setError('Số điện thoại đã tồn tại.')
+            } else {
+                setError('')
+                navigation.replace('Xác thực tài khoản', {
+                    phoneNumber: phone,
+                    name: name,
+                    email: email,
+                    introCode: introCode,
+                })
+            }
+        }
+        console.log(listPhoneNumber._docs);
+
+    }
+
+    // Get phone number exited
+    const getPhoneNumber = async (phoneNumber) => {
+        listPhoneNumber = await firestore().collection('users')
+            .where('phoneNumber', '==', phoneNumber)
+            .get()
     }
 
     // Select Area number
@@ -38,6 +58,7 @@ const Register = ({ navigation, route }) => {
         setFlag(flag)
         refRBSheet.current.close()
     }
+
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -82,6 +103,7 @@ const Register = ({ navigation, route }) => {
                         autoCorrect={false}
                     />
                 </View>
+                <Text style={styles.error}>{error}</Text>
 
                 {/* Email */}
                 <Text style={styles.titleInput}>Email</Text>
@@ -98,7 +120,7 @@ const Register = ({ navigation, route }) => {
                 <Text style={styles.titleInput}>Mã giới thiệu</Text>
                 <TextInput
                     style={styles.input}
-                    onChangeText={setIntroducCode}
+                    onChangeText={setIntroCode}
                     placeholder="123456"
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -120,7 +142,7 @@ const Register = ({ navigation, route }) => {
                 </View>
 
                 <TouchableOpacity
-                    onPress={() => signInWithPhoneNumber(areaNumber, phoneNumber)}
+                    onPress={() => onRegister(areaNumber, phoneNumber)}
                 >
                     <View style={[styles.footerRight, { backgroundColor: (name && phoneNumber) ? '#47d173' : '#ebebeb' }]}>
                         <Ionicons name={'chevron-forward'} size={40} color={'#fff'} />
@@ -137,7 +159,7 @@ const Register = ({ navigation, route }) => {
                 customStyles={{
                     wrapper: {
                         backgroundColor: "#bfbbbb",
-                        opacity: 0.8
+                        opacity: 0.95
                     },
                     draggableIcon: {
                         backgroundColor: "#000",
@@ -261,7 +283,7 @@ const styles = StyleSheet.create({
 
     input: {
         fontSize: 18,
-        minWidth: 250,
+        minWidth: 227,
         height: 60,
         borderWidth: 1,
         marginTop: 10,

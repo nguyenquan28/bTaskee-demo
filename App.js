@@ -1,13 +1,14 @@
 import React from 'react';
 import Login from './src/screen/Login';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Register from './src/screen/Register';
 import VerifyCode from './src/screen/VerifyCode';
 import SetPassword from './src/screen/SetPassword';
+import Home from './src/screen/Home'
 const App = () => {
 
-  const Stack = createStackNavigator()
+  const Stack = createNativeStackNavigator();
 
   return (
     <NavigationContainer>
@@ -27,6 +28,10 @@ const App = () => {
         <Stack.Screen
           name='Đặt mật khẩu'
           component={SetPassword}
+        />
+        <Stack.Screen
+          name='Trang chủ'
+          component={Home}
         />
       </Stack.Navigator>
     </NavigationContainer>
