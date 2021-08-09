@@ -34,7 +34,7 @@ const Login = ({ navigation }) => {
                 .get()
                 .then(querySnapshot => {
                     querySnapshot.forEach((doc) => {
-                        console.log(doc._data.password);
+                        // console.log(doc._data.password);
                         if (doc._data.password == password) {
                             setError('')
                             navigation.replace('Trang chủ')
@@ -55,77 +55,76 @@ const Login = ({ navigation }) => {
     }
 
     return (
-        <SafeAreaView>
-            <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
 
-                {/* Header */}
-                <View style={styles.header}>
-                    <Text style={styles.headerText}>Mừng trở lại,</Text>
-                    <Text style={styles.p}>Vui lòng đăng nhập để tiếp tục.</Text>
-                </View>
+            {/* Header */}
+            <View style={styles.header}>
+                <Text style={styles.headerText}>Mừng trở lại,</Text>
+                <Text style={styles.p}>Vui lòng đăng nhập để tiếp tục.</Text>
+            </View>
 
-                {/* Phone number */}
-                <Text style={styles.titleInput}>Số điện thoại</Text>
-                <View style={styles.phoneArea}>
-                    <TouchableOpacity
-                        onPress={() => refRBSheet.current.open()}
-                    >
-                        <View style={styles.areaNumber}>
-                            <Image style={styles.flag} source={flag} />
-                            <Text style={[styles.p, { marginHorizontal: 5 }]}>{areaNumber}</Text>
-                            <Ionicons name={'caret-down'} size={20} color={'#4f4f4f'} />
-                        </View>
-                    </TouchableOpacity>
-                    <TextInput
-                        style={styles.input}
-                        placeholder='Nhập số điện thoại'
-                        onChangeText={setPhoneNumber}
-                        borderColor={'#bdbdbd'}
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                    />
-                </View>
-
-                {/* Password */}
-                <Text style={styles.titleInput}>Mật khẩu</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setPassword}
-                    placeholderText="Password"
-                    iconType="lock"
-                    secureTextEntry={true}
-                    borderColor={'#bdbdbd'}
-                />
-
-                {/* Error */}
-                <Text style={styles.error}>{error}</Text>
-
-                {/* Button */}
+            {/* Phone number */}
+            <Text style={styles.titleInput}>Số điện thoại</Text>
+            <View style={styles.phoneArea}>
                 <TouchableOpacity
-                    onPress={() => signInWithPhoneNumber(areaNumber, phoneNumber)}
-                    style={styles.btnLogin}
+                    onPress={() => refRBSheet.current.open()}
                 >
-                    <Text style={styles.textLogin}>Đăng nhập</Text>
+                    <View style={styles.areaNumber}>
+                        <Image style={styles.flag} source={flag} />
+                        <Text style={[styles.p, { marginHorizontal: 5 }]}>{areaNumber}</Text>
+                        <Ionicons name={'caret-down'} size={20} color={'#4f4f4f'} />
+                    </View>
                 </TouchableOpacity>
 
-                {/* Footer */}
-                <View style={styles.footer}>
-                    <View style={styles.register}>
-                        <Text style={styles.p}>Bạn chưa có tài khoản?</Text>
+                <TextInput
+                    style={[styles.input, { flex: 150 }]}
+                    placeholder='Nhập số điện thoại'
+                    onChangeText={setPhoneNumber}
+                    borderColor={'#bdbdbd'}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                />
+            </View>
 
-                        {/* onRegister */}
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate('Đăng ký')}
-                        >
-                            <Text style={styles.textLink}>Tạo tài khoản</Text>
-                        </TouchableOpacity>
-                    </View>
+            {/* Password */}
+            <Text style={styles.titleInput}>Mật khẩu</Text>
+            <TextInput
+                style={[styles.input, { marginHorizontal: 20 }]}
+                onChangeText={setPassword}
+                placeholderText="Password"
+                iconType="lock"
+                secureTextEntry={true}
+                borderColor={'#bdbdbd'}
+            />
 
-                    {/* onForgot Password */}
-                    <TouchableOpacity style={styles.forgotPass}>
-                        <Text style={styles.textLink}>Quên mật khẩu</Text>
+            {/* Error */}
+            <Text style={styles.error}>{error}</Text>
+
+            {/* Button */}
+            <TouchableOpacity
+                onPress={() => signInWithPhoneNumber(areaNumber, phoneNumber)}
+                style={styles.btnLogin}
+            >
+                <Text style={styles.textLogin}>Đăng nhập</Text>
+            </TouchableOpacity>
+
+            {/* Footer */}
+            <View style={styles.footer}>
+                <View style={styles.register}>
+                    <Text style={styles.p}>Bạn chưa có tài khoản?</Text>
+
+                    {/* onRegister */}
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('Đăng ký')}
+                    >
+                        <Text style={styles.textLink}>Tạo tài khoản</Text>
                     </TouchableOpacity>
                 </View>
+
+                {/* onForgot Password */}
+                <TouchableOpacity style={styles.forgotPass}>
+                    <Text style={styles.textLink}>Quên mật khẩu</Text>
+                </TouchableOpacity>
             </View>
 
             {/* AreaCode */}
@@ -191,18 +190,19 @@ const Login = ({ navigation }) => {
 const styles = StyleSheet.create({
 
     container: {
-        // flex: 1,
+        flex: 1,
         backgroundColor: '#fff',
-        padding: 20
     },
 
     header: {
         marginTop: 30,
-        marginBottom: 30
+        marginBottom: 30,
+        paddingHorizontal: 20
     },
 
     phoneArea: {
         flexDirection: 'row',
+        marginHorizontal: 20
     },
 
     headerText: {
@@ -220,7 +220,8 @@ const styles = StyleSheet.create({
     titleInput: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#524e4e'
+        color: '#524e4e',
+        marginHorizontal: 20
     },
 
     error: {
@@ -237,14 +238,13 @@ const styles = StyleSheet.create({
     },
 
     areaNumber: {
+        flex: 50,
         height: 60,
         backgroundColor: '#ebebeb',
-        paddingTop: 10,
-        paddingBottom: 10,
         paddingHorizontal: 10,
         borderRadius: 10,
         flexDirection: 'row',
-        marginBottom: 10,
+        marginBottom: 30,
         marginTop: 10,
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -260,7 +260,6 @@ const styles = StyleSheet.create({
 
     input: {
         fontSize: 18,
-        minWidth: 227,
         height: 60,
         borderWidth: 1,
         marginTop: 10,
@@ -276,6 +275,7 @@ const styles = StyleSheet.create({
         padding: 20,
         borderRadius: 10,
         alignItems: 'center',
+        marginHorizontal: 20
     },
 
     textLogin: {
@@ -285,13 +285,17 @@ const styles = StyleSheet.create({
     },
 
     footer: {
-        marginTop: 160,
-        alignItems: 'center'
+        position: 'absolute',
+        bottom: 50,
+        alignSelf: 'center'
     },
 
     register: {
         flexDirection: 'row',
         marginBottom: 20
+    },
+    forgotPass: {
+        alignSelf: 'center'
     },
 
     textLink: {

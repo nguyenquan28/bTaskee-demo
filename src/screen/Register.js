@@ -61,7 +61,7 @@ const Register = ({ navigation, route }) => {
 
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
             <ScrollView style={styles.container}>
 
                 {/* Header */}
@@ -95,7 +95,7 @@ const Register = ({ navigation, route }) => {
                         </View>
                     </TouchableOpacity>
                     <TextInput
-                        style={styles.input}
+                        style={[styles.input, { flex: 150 }]}
                         placeholder='0987123456'
                         onChangeText={setPhoneNumber}
                         borderColor={'#bdbdbd'}
@@ -215,6 +215,7 @@ const Register = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         backgroundColor: '#fff',
         padding: 20
     },
@@ -267,14 +268,13 @@ const styles = StyleSheet.create({
     },
 
     areaNumber: {
+        flex: 50,
         height: 60,
         backgroundColor: '#ebebeb',
-        paddingTop: 10,
-        paddingBottom: 10,
         paddingHorizontal: 10,
         borderRadius: 10,
         flexDirection: 'row',
-        marginBottom: 10,
+        marginBottom: 30,
         marginTop: 10,
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -283,7 +283,6 @@ const styles = StyleSheet.create({
 
     input: {
         fontSize: 18,
-        minWidth: 227,
         height: 60,
         borderWidth: 1,
         marginTop: 10,
