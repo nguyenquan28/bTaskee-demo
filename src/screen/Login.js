@@ -58,7 +58,7 @@ const Login = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
 
             {/* Header */}
-            <View style={styles.header}>
+            <View testID='title' style={styles.header}>
                 <Text style={styles.headerText}>Mừng trở lại,</Text>
                 <Text style={styles.p}>Vui lòng đăng nhập để tiếp tục.</Text>
             </View>
@@ -67,6 +67,7 @@ const Login = ({ navigation }) => {
             <Text style={styles.titleInput}>Số điện thoại</Text>
             <View style={styles.phoneArea}>
                 <TouchableOpacity
+                    testID='areaNumber_btn'
                     onPress={() => refRBSheet.current.open()}
                 >
                     <View style={styles.areaNumber}>
@@ -77,6 +78,7 @@ const Login = ({ navigation }) => {
                 </TouchableOpacity>
 
                 <TextInput
+                    testID='phoneNumber_input'
                     style={[styles.input, { flex: 150 }]}
                     placeholder='Nhập số điện thoại'
                     onChangeText={setPhoneNumber}
@@ -89,6 +91,7 @@ const Login = ({ navigation }) => {
             {/* Password */}
             <Text style={styles.titleInput}>Mật khẩu</Text>
             <TextInput
+                testID='password_input'
                 style={[styles.input, { marginHorizontal: 20 }]}
                 onChangeText={setPassword}
                 placeholderText="Password"
@@ -102,6 +105,7 @@ const Login = ({ navigation }) => {
 
             {/* Button */}
             <TouchableOpacity
+                testID='login_btn'
                 onPress={() => signInWithPhoneNumber(areaNumber, phoneNumber)}
                 style={styles.btnLogin}
             >
@@ -115,6 +119,7 @@ const Login = ({ navigation }) => {
 
                     {/* onRegister */}
                     <TouchableOpacity
+                        testID='navigate_register_btn'
                         onPress={() => navigation.navigate('Đăng ký')}
                     >
                         <Text style={styles.textLink}>Tạo tài khoản</Text>
@@ -122,7 +127,9 @@ const Login = ({ navigation }) => {
                 </View>
 
                 {/* onForgot Password */}
-                <TouchableOpacity style={styles.forgotPass}>
+                <TouchableOpacity style={styles.forgotPass}
+                    testID='navigate_forgotPassword_btn'
+                >
                     <Text style={styles.textLink}>Quên mật khẩu</Text>
                 </TouchableOpacity>
             </View>
@@ -145,6 +152,7 @@ const Login = ({ navigation }) => {
             >
                 {/* Viet Nam */}
                 <TouchableOpacity
+                    testID='choose_vn_btn'
                     onPress={() => hanldeAreaNumber('+84', VN)}
                 >
                     <View style={styles.AreaCode}>
@@ -155,6 +163,7 @@ const Login = ({ navigation }) => {
 
                 {/* Thailand */}
                 <TouchableOpacity
+                    testID='choose_th_btn'
                     onPress={() => hanldeAreaNumber('+66', TH)}
                 >
                     <View style={styles.AreaCode}>
@@ -165,6 +174,7 @@ const Login = ({ navigation }) => {
 
                 {/* HongKong */}
                 <TouchableOpacity
+                    testID='choose_hk_btn'
                     onPress={() => hanldeAreaNumber('+852', HK)}
                 >
                     <View style={styles.AreaCode}>
@@ -175,6 +185,7 @@ const Login = ({ navigation }) => {
 
                 {/* US */}
                 <TouchableOpacity
+                    testID='choose_us_btn'
                     onPress={() => hanldeAreaNumber('+1', US)}
                 >
                     <View style={styles.AreaCode}>
