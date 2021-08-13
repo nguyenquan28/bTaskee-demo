@@ -43,13 +43,17 @@ describe('Test bTaskee-demo app', () => {
     await element(by.id('login_btn')).tap()
   })
 
+  it('should have login screen', async () => {
+    await expect(element(by.id('hello'))).toBeVisible();
+  });
+
   // Go back to login
-  it('Should navigate to login screen', async () => {
-    await element(by.id('logout_btn')).tap();
-  })
+  // it('Should navigate to login screen', async () => {
+  //   await element(by.id('logout_btn')).tap();
+  // })
 
   // Press register account
-  it('Should navigate to register screen', async () => {
-    await element(by.id('navigate_register_btn')).tap()
-  })
+  // it('Should navigate to register screen', async () => {
+  //   await element(by.id('navigate_register_btn')).tap()
+  // })
 });
