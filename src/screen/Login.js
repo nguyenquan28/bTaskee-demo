@@ -3,9 +3,11 @@ import React, { useRef, useState } from 'react';
 import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import RBSheet from "react-native-raw-bottom-sheet";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 
-const Login = ({ navigation, props }) => {
+const Login = (props) => {
 
+    const navigation = useNavigation();
     // Require image
     const VN = require('../assets/images/vn.png')
     const TH = require('../assets/images/thai.jpg')
@@ -39,7 +41,7 @@ const Login = ({ navigation, props }) => {
                                 setError('')
                                 console.log(doc._data.uid);
                                 props.onAddToken(doc._data.uid)
-                                // navigation.replace('Trang chủ')
+                                navigation.replace('Trang chủ')
                             } else {
                                 setError('Vui lòng kiểm tra lại số điện thoại và mật khẩu.')
 

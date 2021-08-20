@@ -6,7 +6,6 @@ import {
 
 export default handleActions({
     [addToken]: (state, { payload: { text } }) => ({
-        ...state,
-        token: state.token.concat([{ text }])
+        token: text
     })
 }, initState.app)
