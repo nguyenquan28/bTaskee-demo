@@ -1,0 +1,20 @@
+{
+    "displayName": null,
+    "email": null,
+    "emailVerified": false,
+    "isAnonymous": false,
+    "metadata": {
+        "creationTime": 1628827384954,
+        "lastSignInTime": 1629296995651
+    },
+    "phoneNumber": "+84123456789",
+    "photoURL": null,
+    "providerData": [
+        [Object
+        ]
+    ],
+    "providerId": "firebase",
+    "refreshToken": "ACzBnCip2pbQoWmnqYlyzGF7tlHVcJMaODvf0NqT0aioQaRZmbmvHwgGwqkL9TGu-GUzZsCQvEKrBYBFjO0eseinfnc07iokikHIoxOqT3Ku_fEQnsEt38T0WAYq47rzefXAeogAjiMYNY2GaueTPBSLCAIzzW1MT03F8dqLEMZs9pigi1rAUh-RLof503196dmnu7RhX8sJ",
+    "tenantId": null,
+    "uid": "LKOGYuzhaYMIEY8mVIojfyJlhp03"
+}

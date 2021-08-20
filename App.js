@@ -3,13 +3,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Login from './src/screen/Login';
 import Register from './src/screen/Register';
 import VerifyCode from './src/screen/VerifyCode';
 import SetPassword from './src/screen/SetPassword';
 import Jobs from './src/screen/Jobs';
 import Service from './src/screen/Service';
 import Setting from './src/screen/Setting';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor, store } from './src/store';
+import { Text } from 'react-native';
+import LoginScreenContainer from './src/containers/LoginScreenContainer';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -43,6 +47,7 @@ const tabScreen = () => (
 
     {/* Screen Menu */}
     <Tab.Screen
+      testID='jobs'
       name="Công việc"
       component={Jobs}
       options={{
@@ -51,6 +56,7 @@ const tabScreen = () => (
         headerTitleAlign: 'center',
       }} />
     <Tab.Screen
+      testID='service'
       name="Dịch vụ"
       component={Service}
       options={{
@@ -59,6 +65,7 @@ const tabScreen = () => (
         headerTitleAlign: 'center',
       }} />
     <Tab.Screen
+      testID='setting'
       name="Cài đặt"
       component={Setting}
       options={{
@@ -74,31 +81,35 @@ const tabScreen = () => (
 const App = () => {
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name='Đăng nhập'
-          component={Login}
-        />
-        <Stack.Screen
-          name='Đăng ký'
-          component={Register}
-        />
-        <Stack.Screen
-          name='Xác thực tài khoản'
-          component={VerifyCode}
-        />
-        <Stack.Screen
-          name='Đặt mật khẩu'
-          component={SetPassword}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name='Trang chủ'
-          component={tabScreen}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <PersistGate loading={(<Text>Loading</Text>)} persistor={persistor}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name='Đăng nhập'
+              component={LoginScreenContainer}
+            />
+            <Stack.Screen
+              name='Đăng ký'
+              component={Register}
+            />
+            <Stack.Screen
+              name='Xác thực tài khoản'
+              component={VerifyCode}
+            />
+            <Stack.Screen
+              name='Đặt mật khẩu'
+              component={SetPassword}
+            />
+            <Stack.Screen
+              options={{ headerShown: false }}
+              name='Trang chủ'
+              component={tabScreen}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
   );
 };
 

@@ -1,6 +1,5 @@
-import React from 'react'
-import { firebase } from '@react-native-firebase/app'
-import { auth } from '@react-native-firebase/auth'
+import { firebase } from '@react-native-firebase/app';
+import { auth } from '@react-native-firebase/auth';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBe2LrldEkmliScfqYmZik06tjfJzqvSqA",

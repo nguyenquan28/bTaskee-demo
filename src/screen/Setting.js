@@ -1,18 +1,17 @@
 import React from 'react'
-import { SafeAreaView, Text, StyleSheet, Button } from 'react-native'
-const Setting = ({ navigate }) => {
+import { SafeAreaView, Text, StyleSheet, Button, TouchableOpacity } from 'react-native'
+const Setting = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Setting Page</Text>
-            <Button
-                testID='logout_btn'
-                title='Log out'
-                color="#841584"
+            <Text style={styles.title}>Cài đặt</Text>
+            <TouchableOpacity
                 onPress={() => navigation.reset({
                     index: 0,
                     routes: [{ name: 'Đăng nhập' }],
                 })}
-            />
+            >
+                <Text>Đăng xuất</Text>
+            </TouchableOpacity>
         </SafeAreaView>
     )
 }

@@ -1,13 +1,10 @@
-import React, { useRef } from 'react'
-import { useState } from 'react'
-import { Alert, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import firestore from '@react-native-firebase/firestore'
-import auth from '@react-native-firebase/auth';
-import Dialog from "react-native-dialog";
+import firestore from '@react-native-firebase/firestore';
+import React, { useRef, useState } from 'react';
+import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import RBSheet from "react-native-raw-bottom-sheet";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const Login = ({ navigation }) => {
+const Login = ({ navigation, props }) => {
 
     // Require image
     const VN = require('../assets/images/vn.png')
@@ -33,22 +30,30 @@ const Login = ({ navigation }) => {
                 .where('phoneNumber', '==', phone)
                 .get()
                 .then(querySnapshot => {
-                    querySnapshot.forEach((doc) => {
-                        // console.log(doc._data.password);
-                        if (doc._data.password == password) {
-                            setError('')
-                            navigation.replace('Trang chủ')
-                        } else {
-                            setError('Vui lòng kiểm tra lại số điện thoại và mật khẩu.')
+                    // console.log(querySnapshot._changes);
+                    if (Array.isArray(querySnapshot._changes) && querySnapshot._changes.length) {
 
-                        }
-                    })
+                        querySnapshot.forEach((doc) => {
+                            // console.log(doc._data.password);
+                            if (doc._data.password == password) {
+                                setError('')
+                                console.log(doc._data.uid);
+                                props.onAddToken(doc._data.uid)
+                                // navigation.replace('Trang chủ')
+                            } else {
+                                setError('Vui lòng kiểm tra lại số điện thoại và mật khẩu.')
+
+                            }
+                        })
+                    } else {
+                        setError('Tài khoản chưa được tạo.')
+                    }
                 })
         }
     }
 
     // Select Area number
-    const hanldeAreaNumber = (code, flag) => {
+    const handleAreaNumber = (code, flag) => {
         setAreaNumber(code)
         setFlag(flag)
         refRBSheet.current.close()
@@ -58,8 +63,8 @@ const Login = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
 
             {/* Header */}
-            <View testID='title' style={styles.header}>
-                <Text style={styles.headerText}>Mừng trở lại,</Text>
+            <View style={styles.header}>
+                <Text style={styles.headerText}>Mừng trở lại</Text>
                 <Text style={styles.p}>Vui lòng đăng nhập để tiếp tục.</Text>
             </View>
 
@@ -67,7 +72,7 @@ const Login = ({ navigation }) => {
             <Text style={styles.titleInput}>Số điện thoại</Text>
             <View style={styles.phoneArea}>
                 <TouchableOpacity
-                    testID='areaNumber_btn'
+                    testID='chooseCountryCode'
                     onPress={() => refRBSheet.current.open()}
                 >
                     <View style={styles.areaNumber}>
@@ -153,7 +158,7 @@ const Login = ({ navigation }) => {
                 {/* Viet Nam */}
                 <TouchableOpacity
                     testID='choose_vn_btn'
-                    onPress={() => hanldeAreaNumber('+84', VN)}
+                    onPress={() => handleAreaNumber('+84', VN)}
                 >
                     <View style={styles.AreaCode}>
                         <Image style={styles.flag} source={VN} />
@@ -164,7 +169,7 @@ const Login = ({ navigation }) => {
                 {/* Thailand */}
                 <TouchableOpacity
                     testID='choose_th_btn'
-                    onPress={() => hanldeAreaNumber('+66', TH)}
+                    onPress={() => handleAreaNumber('+66', TH)}
                 >
                     <View style={styles.AreaCode}>
                         <Image style={styles.flag} source={TH} />
@@ -175,7 +180,7 @@ const Login = ({ navigation }) => {
                 {/* HongKong */}
                 <TouchableOpacity
                     testID='choose_hk_btn'
-                    onPress={() => hanldeAreaNumber('+852', HK)}
+                    onPress={() => handleAreaNumber('+852', HK)}
                 >
                     <View style={styles.AreaCode}>
                         <Image style={styles.flag} source={HK} />
@@ -186,7 +191,7 @@ const Login = ({ navigation }) => {
                 {/* US */}
                 <TouchableOpacity
                     testID='choose_us_btn'
-                    onPress={() => hanldeAreaNumber('+1', US)}
+                    onPress={() => handleAreaNumber('+1', US)}
                 >
                     <View style={styles.AreaCode}>
                         <Image style={styles.flag} source={US} />
@@ -239,6 +244,7 @@ const styles = StyleSheet.create({
         color: 'red',
         marginTop: -20,
         marginBottom: 30,
+        marginRight: 20,
         alignSelf: 'flex-end'
     },
 
