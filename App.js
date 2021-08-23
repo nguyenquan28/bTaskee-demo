@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -14,9 +14,13 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './src/store';
 import { Text } from 'react-native';
 import LoginScreenContainer from './src/containers/LoginScreenContainer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ListJob from './src/screen/ListJob';
+import NewJob from './src/screen/NewJob';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
 // Tabs navigation
 const tabScreen = () => (
   <Tab.Navigator
@@ -25,7 +29,7 @@ const tabScreen = () => (
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
 
-        if (route.name === 'Công việc') {
+        if (route.name === 'Trang chủ') {
           iconName = focused
             ? 'list-circle'
             : 'list-circle-outline';
@@ -42,16 +46,17 @@ const tabScreen = () => (
       },
       tabBarActiveTintColor: '#ff8c0f',
       tabBarInactiveTintColor: 'gray',
+      headerShown: false
     })}
   >
 
     {/* Screen Menu */}
     <Tab.Screen
       testID='jobs'
-      name="Công việc"
-      component={Jobs}
+      name="Trang chủ"
+      component={stackJobs}
       options={{
-        title: 'Công việc',
+
         headerTintColor: '#000000',
         headerTitleAlign: 'center',
       }} />
@@ -60,7 +65,6 @@ const tabScreen = () => (
       name="Dịch vụ"
       component={Service}
       options={{
-        title: 'Dịch vụ',
         headerTintColor: '#fff',
         headerTitleAlign: 'center',
       }} />
@@ -69,7 +73,6 @@ const tabScreen = () => (
       name="Cài đặt"
       component={Setting}
       options={{
-        title: 'Cài đặt',
         headerTintColor: '#fff',
         headerTitleAlign: 'center',
       }} />
@@ -77,35 +80,83 @@ const tabScreen = () => (
   </Tab.Navigator>
 );
 
+// Jobs
+const stackJobs = () => {
+  return (
+    <Stack.Navigator
+      headerShown='false'
+    >
+      <Stack.Screen
+        name='Công việc'
+        component={Jobs}
+      />
+      <Stack.Screen
+        name='Công việc mới đăng'
+        component={ListJob}
+      />
+      <Stack.Screen
+        name='Tạo công việc'
+        component={NewJob}
+      />
+    </Stack.Navigator>
+  )
+}
+
 // Main Navigation
 const App = () => {
+
+  const [token, setToken] = useState(null)
+
+  const getData = async () => {
+    try {
+      setToken(await AsyncStorage.getItem('@token'))
+    } catch (e) {
+      // error reading value
+      setToken(null)
+    }
+  }
+
+  useEffect(() => {
+    getData()
+  }, [token])
 
   return (
     <Provider store={store}>
       <PersistGate loading={(<Text>Loading</Text>)} persistor={persistor}>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen
-              name='Đăng nhập'
-              component={LoginScreenContainer}
-            />
-            <Stack.Screen
-              name='Đăng ký'
-              component={Register}
-            />
-            <Stack.Screen
-              name='Xác thực tài khoản'
-              component={VerifyCode}
-            />
-            <Stack.Screen
-              name='Đặt mật khẩu'
-              component={SetPassword}
-            />
-            <Stack.Screen
-              options={{ headerShown: false }}
-              name='Trang chủ'
-              component={tabScreen}
-            />
+            {token == null ? (
+              <>
+                <Stack.Screen
+                  name='Đăng nhập'
+                  component={LoginScreenContainer}
+                />
+                <Stack.Screen
+                  name='Đăng ký'
+                  component={Register}
+                />
+                <Stack.Screen
+                  name='Xác thực tài khoản'
+                  component={VerifyCode}
+                />
+                <Stack.Screen
+                  name='Đặt mật khẩu'
+                  component={SetPassword}
+                />
+                <Stack.Screen
+                  options={{ headerShown: false }}
+                  name='Trang chính'
+                  component={tabScreen}
+                />
+              </>
+            ) : (
+              <Stack.Screen
+                options={{ headerShown: false }}
+                name='Trang chính'
+                component={tabScreen}
+              />
+            )}
+
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

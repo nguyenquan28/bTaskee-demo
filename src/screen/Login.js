@@ -4,6 +4,7 @@ import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, Vie
 import RBSheet from "react-native-raw-bottom-sheet";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = (props) => {
 
@@ -22,6 +23,15 @@ const Login = (props) => {
     const [areaNumber, setAreaNumber] = useState('+84')
     const [flag, setFlag] = useState(VN)
 
+    const storeData = async (value) => {
+        try {
+            await AsyncStorage.setItem('@token', value)
+        } catch (e) {
+            // saving error
+            console.log(e);
+        }
+    }
+
     // Method SignIn
     const signInWithPhoneNumber = async (areaNumber, phoneNumber) => {
         let phone = areaNumber + phoneNumber
@@ -39,9 +49,10 @@ const Login = (props) => {
                             // console.log(doc._data.password);
                             if (doc._data.password == password) {
                                 setError('')
-                                console.log(doc._data.uid);
+                                // console.log(doc._data.uid);
+                                storeData(doc._data.uid)
                                 props.onAddToken(doc._data.uid)
-                                navigation.replace('Trang chủ')
+                                navigation.replace('Trang chính')
                             } else {
                                 setError('Vui lòng kiểm tra lại số điện thoại và mật khẩu.')
 
