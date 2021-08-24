@@ -17,6 +17,8 @@ import LoginScreenContainer from './src/containers/LoginScreenContainer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ListJob from './src/screen/ListJob';
 import NewJob from './src/screen/NewJob';
+import WorkTime from './src/screen/WorkTime';
+import { NewJobScreenContainer } from './src/containers';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -54,7 +56,7 @@ const tabScreen = () => (
     <Tab.Screen
       testID='jobs'
       name="Trang chủ"
-      component={stackJobs}
+      component={Jobs}
       options={{
 
         headerTintColor: '#000000',
@@ -96,7 +98,11 @@ const stackJobs = () => {
       />
       <Stack.Screen
         name='Tạo công việc'
-        component={NewJob}
+        component={NewJobScreenContainer}
+      />
+      <Stack.Screen
+        name='Chọn thời gian làm việc'
+        component={WorkTime}
       />
     </Stack.Navigator>
   )
@@ -148,13 +154,39 @@ const App = () => {
                   name='Trang chính'
                   component={tabScreen}
                 />
+                <Stack.Screen
+                  name='Công việc mới đăng'
+                  component={ListJob}
+                />
+                <Stack.Screen
+                  name='Tạo công việc'
+                  component={NewJobScreenContainer}
+                />
+                <Stack.Screen
+                  name='Chọn thời gian làm việc'
+                  component={WorkTime}
+                />
               </>
             ) : (
-              <Stack.Screen
-                options={{ headerShown: false }}
-                name='Trang chính'
-                component={tabScreen}
-              />
+              <>
+                <Stack.Screen
+                  options={{ headerShown: false }}
+                  name='Trang chính'
+                  component={tabScreen}
+                />
+                <Stack.Screen
+                  name='Công việc mới đăng'
+                  component={ListJob}
+                />
+                <Stack.Screen
+                  name='Tạo công việc'
+                  component={NewJobScreenContainer}
+                />
+                <Stack.Screen
+                  name='Chọn thời gian làm việc'
+                  component={WorkTime}
+                />
+              </>
             )}
 
           </Stack.Navigator>
