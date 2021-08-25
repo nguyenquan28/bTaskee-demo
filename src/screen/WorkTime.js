@@ -11,14 +11,14 @@ const WorkTime = (props) => {
     const [date, setDate] = useState(Date());
     const [job, setJob] = useState(false);
     const [time, setTime] = useState(new Date());
-    const [address, setAddress] = useState()
+    const [address, setAddress] = useState('')
     const [note, setNote] = useState('')
 
     // Handle pick date
     const onDateSelected = selectedDate => {
         setDate(selectedDate)
         console.log(selectedDate.format('DD-MM-YYYY'));
-        job.date = selectedDate.format('DD-MM-YYYY')
+        job.date = selectedDate.format('DD/MM/YYYY')
     }
 
     // Handle pick time
@@ -32,7 +32,7 @@ const WorkTime = (props) => {
             // d = date
             console.log(date.getHours() + ':' + date.getMinutes());
             setTime(date)
-            job.time = date.getHours() + ':' + date.getMinutes()
+            job.time = (date.getHours() > 9 ? '' : '0') + date.getHours() + ':' + (date.getMinutes() > 9 ? '' : '0') + date.getMinutes()
         }
     }
 
@@ -44,7 +44,7 @@ const WorkTime = (props) => {
     const handleCreateJob = () => {
         job.note = note
         job.address = address
-        // console.log(job);
+        console.log(job);
         props.onAddJob(job)
         navigation.navigate('Xác nhận công việc')
     }
@@ -174,7 +174,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingHorizontal: 20,
         backgroundColor: 'white',
-        marginBottom: 20,
     },
 })
 export default WorkTime;
