@@ -31,7 +31,21 @@ const InfoJob = (props) => {
     }
 
     const handleCreateJob = async () => {
-
+        firestore().collection('jobs').add({
+            address: job.address,
+            choosePeople: job.choosePeople,
+            cook: job.cook,
+            date: job.date,
+            duration: job.duration,
+            ironing: job.ironing,
+            name: name,
+            note: job.note,
+            pet: job.pet,
+            price: job.price,
+            time: job.time,
+            tools: job.tools,
+            uid: store.getState().app.token
+        })
     }
 
     return (
