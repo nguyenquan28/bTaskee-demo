@@ -18,7 +18,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ListJob from './src/screen/ListJob';
 import NewJob from './src/screen/NewJob';
 import WorkTime from './src/screen/WorkTime';
-import { NewJobScreenContainer } from './src/containers';
+import { NewJobScreenContainer, WorkTimeScreenContainer } from './src/containers';
+import InfoJob from './src/screen/InfoJob';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -102,7 +103,7 @@ const stackJobs = () => {
       />
       <Stack.Screen
         name='Chọn thời gian làm việc'
-        component={WorkTime}
+        component={WorkTimeScreenContainer}
       />
     </Stack.Navigator>
   )
@@ -166,6 +167,10 @@ const App = () => {
                   name='Chọn thời gian làm việc'
                   component={WorkTime}
                 />
+                <Stack.Screen
+                  name='Xác nhận công việc'
+                  component={InfoJob}
+                />
               </>
             ) : (
               <>
@@ -184,7 +189,11 @@ const App = () => {
                 />
                 <Stack.Screen
                   name='Chọn thời gian làm việc'
-                  component={WorkTime}
+                  component={WorkTimeScreenContainer}
+                />
+                <Stack.Screen
+                  name='Xác nhận công việc'
+                  component={InfoJob}
                 />
               </>
             )}

@@ -58,7 +58,7 @@ const NewJob = (props) => {
 
     useEffect(() => {
         handlePrice()
-        console.log(price);
+        // console.log(price);
     })
 
     // Highlight text

@@ -4,9 +4,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { store } from '../store'
 
 const ListJob = ({ navigation }) => {
-    useEffect(() => {
-        console.log(store.getState());
-    })
     return (
         <SafeAreaView style={styles.container}>
 
