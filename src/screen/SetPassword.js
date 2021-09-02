@@ -5,11 +5,11 @@ import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } fro
 const SetPassword = ({ navigation, route }) => {
 
     const [password, setPassword] = useState("0")
-    // const { phoneNumber } = route.params
-    // const { name } = route.params
-    // const { email } = route.params
-    // const { introCode } = route.params
-    // const { UID } = route.params
+    const { phoneNumber } = route.params
+    const { name } = route.params
+    const { email } = route.params
+    const { introCode } = route.params
+    const { UID } = route.params
 
     // Add to firebase
     const addUser = async () => {

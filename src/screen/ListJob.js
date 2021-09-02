@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react'
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React from 'react';
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { store } from '../store'
 
 const ListJob = ({ navigation }) => {
     return (
@@ -42,6 +41,7 @@ const ListJob = ({ navigation }) => {
 
             {/* New job */}
             <TouchableOpacity
+                testID='navigate_newJob'
                 onPress={() => navigation.navigate('Tạo công việc')}
                 style={styles.create_job}
             >

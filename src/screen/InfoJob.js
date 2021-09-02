@@ -1,8 +1,7 @@
-import firestore from '@react-native-firebase/firestore'
-import { useNavigation, useRoute } from '@react-navigation/native'
-import React, { useEffect, useState } from 'react'
-import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import firestore from '@react-native-firebase/firestore';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { Alert, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { store } from '../store';
 
 const InfoJob = (props) => {
@@ -42,15 +41,30 @@ const InfoJob = (props) => {
             note: job.note,
             pet: job.pet,
             price: job.price,
+            staff: 'null',
+            status: 'WAITING',
             time: job.time,
             tools: job.tools,
             uid: store.getState().app.token
         })
+        Alert.alert(
+            "Thông báo",
+            "Tạo công việc thành công",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                { text: "OK", onPress: () => navigation.navigate('Trang chính') }
+            ])
     }
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView>
+            <ScrollView
+                testID='scroll_infoJob'
+            >
                 {/* Address */}
                 <Text style={styles.title}>Vị trí làm việc</Text>
                 <View style={styles.area_content}>
@@ -111,6 +125,7 @@ const InfoJob = (props) => {
                     <Text style={styles.price}> {(job) ? job.price : '' / 1000},000 VND</Text>
                 </View>
                 <TouchableOpacity
+                    testID='createJob'
                     style={styles.button}
                     onPress={handleCreateJob}
                 >

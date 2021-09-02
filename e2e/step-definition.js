@@ -150,7 +150,7 @@ const loginWithPhoneAndPassword = async (phone, password, countryCode) => {
   // await device.reloadReactNative();
 
   // DON'T NEED BECAUSE AUTO LOGOUT WORKEDÍÍÍÍÍ
-  // const account = await checkElementVisible('TÀI KHOẢN', 'text');
+  // cons t account = await checkElementVisible('TÀI KHOẢN', 'text');
   // if (account) {
   //   await tapText('TÀI KHOẢN');
   //   await tapText('Cài đặt');

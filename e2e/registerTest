@@ -65,7 +65,7 @@ describe('Register account', () => {
         await clearTextInput('verify_input')
         await enterInput('verify_input', 'abcxyz')
         await tapId('navigate_verify_page')
-        await waitForElement('verifyCode_input',10000, 'press');
+        await waitForElement('verifyCode_input',10000);
         await tapId('verify_btn');
         // .withTimeout
         // await tapText('Nhận mã kích hoạt gồm 6 chữ số đã được gửi đến số điện thoại của bạn.')

@@ -20,6 +20,7 @@ import NewJob from './src/screen/NewJob';
 import WorkTime from './src/screen/WorkTime';
 import { NewJobScreenContainer, WorkTimeScreenContainer } from './src/containers';
 import InfoJob from './src/screen/InfoJob';
+import DescriptionTask from './src/screen/DescriptionTask';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -32,7 +33,7 @@ const tabScreen = () => (
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
 
-        if (route.name === 'Trang chủ') {
+        if (route.name === 'Công việc') {
           iconName = focused
             ? 'list-circle'
             : 'list-circle-outline';
@@ -55,20 +56,20 @@ const tabScreen = () => (
 
     {/* Screen Menu */}
     <Tab.Screen
-      testID='jobs'
-      name="Trang chủ"
+      testID='service'
+      name="Dịch vụ"
       component={Jobs}
       options={{
-
-        headerTintColor: '#000000',
+        headerTintColor: '#fff',
         headerTitleAlign: 'center',
       }} />
     <Tab.Screen
-      testID='service'
-      name="Dịch vụ"
+      testID='jobs'
+      name="Công việc"
       component={Service}
       options={{
-        headerTintColor: '#fff',
+
+        headerTintColor: '#000000',
         headerTitleAlign: 'center',
       }} />
     <Tab.Screen
@@ -171,6 +172,10 @@ const App = () => {
                   name='Xác nhận công việc'
                   component={InfoJob}
                 />
+                <Stack.Screen
+                  name='Chi tiết'
+                  component={DescriptionTask}
+                />
               </>
             ) : (
               <>
@@ -194,6 +199,10 @@ const App = () => {
                 <Stack.Screen
                   name='Xác nhận công việc'
                   component={InfoJob}
+                />
+                <Stack.Screen
+                  name='Chi tiết'
+                  component={DescriptionTask}
                 />
               </>
             )}

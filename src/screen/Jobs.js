@@ -12,6 +12,7 @@ const Jobs = ({ navigation }) => {
             <View style={styles.service}>
                 <View style={styles.box_service}>
                     <TouchableOpacity
+                        testID='navigate_listJob'
                         onPress={() => navigation.navigate('Công việc mới đăng')}
                     >
                         <View style={styles.border_image}>

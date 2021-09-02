@@ -87,12 +87,15 @@ const NewJob = (props) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView>
+            <ScrollView
+                testID='scroll_view'
+            >
 
                 {/* Duration */}
                 <Text style={styles.title}>Thời lượng</Text>
                 <Text style={styles.p}>Vui lòng ước tính chính xác diện tích cần dọn dẹp.</Text>
                 <TouchableOpacity
+                    testID='duration_2'
                     onPress={() => onSetDuration(2)}
                 >
                     <View style={[styles.area, { borderColor: (duration === 2) ? '#ff8c0f' : '#c2c2c2' }]}>
@@ -101,6 +104,7 @@ const NewJob = (props) => {
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
+                    testID='duration_3'
                     onPress={() => onSetDuration(3)}
                 >
                     <View style={[styles.area, { borderColor: (duration === 3) ? '#ff8c0f' : '#c2c2c2' }]}>
@@ -109,6 +113,7 @@ const NewJob = (props) => {
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
+                    testID='duration_4'
                     onPress={() => onSetDuration(4)}
                 >
                     <View style={[styles.area, { borderColor: (duration === 4) ? '#ff8c0f' : '#c2c2c2' }]}>
@@ -122,6 +127,7 @@ const NewJob = (props) => {
                 <Text style={styles.p}>Bạn có thể chọn thêm dịch vụ.</Text>
                 <View style={styles.more_services}>
                     <TouchableOpacity
+                        testID='cook'
                         onPress={handleCook}
                     >
                         <View style={styles.service}>
@@ -131,6 +137,7 @@ const NewJob = (props) => {
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity
+                        testID='ironing'
                         onPress={handleIroning}
                     >
                         <View style={styles.service}>
@@ -140,6 +147,7 @@ const NewJob = (props) => {
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity
+                        testID='tools'
                         onPress={handleTools}
                     >
                         <View style={styles.service}>
@@ -159,6 +167,7 @@ const NewJob = (props) => {
                             <Text style={styles.p}>Bạn tự chọn người làm</Text>
                         </View>
                         <Switch
+                            testID='choose_people'
                             style={styles.switch}
                             trackColor={{ false: "#c2c2c2", true: "#47d173" }}
                             thumbColor={isEnabled ? "#285433" : "#f4f3f4"}
@@ -173,6 +182,7 @@ const NewJob = (props) => {
                             <Text style={styles.p}>Nhà có vật nuôi</Text>
                         </View>
                         <Switch
+                            testID='pet'
                             trackColor={{ false: "#c2c2c2", true: "#47d173" }}
                             thumbColor={isEnabled1 ? "#285433" : "#f4f3f4"}
                             ios_backgroundColor="#c2c2c2"
@@ -186,6 +196,7 @@ const NewJob = (props) => {
                             <Text style={styles.p}>Ưu tiên người làm yêu thích</Text>
                         </View>
                         <Switch
+                            testID='lovely'
                             trackColor={{ false: "#c2c2c2", true: "#47d173" }}
                             thumbColor={isEnabled2 ? "#285433" : "#f4f3f4"}
                             ios_backgroundColor="#c2c2c2"
@@ -200,6 +211,7 @@ const NewJob = (props) => {
             {/* Total */}
             <View style={styles.footer}>
                 <TouchableOpacity
+                    testID='navigate_workTime'
                     style={[styles.button, { backgroundColor: (duration == null) ? '#ededed' : '#47d173' }]}
                     onPress={handleCreateJob}
                 >

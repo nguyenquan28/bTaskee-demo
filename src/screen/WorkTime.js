@@ -13,7 +13,7 @@ const WorkTime = (props) => {
     const [time, setTime] = useState(new Date());
     const [address, setAddress] = useState('')
     const [note, setNote] = useState('')
-
+    const [error, setError] = useState('')
     // Handle pick date
     const onDateSelected = selectedDate => {
         setDate(selectedDate)
@@ -42,18 +42,26 @@ const WorkTime = (props) => {
 
     // Handle create job
     const handleCreateJob = () => {
-        job.note = note
-        job.address = address
-        console.log(job);
-        props.onAddJob(job)
-        navigation.navigate('Xác nhận công việc')
+        if (date > Date.now()) {
+            setError('')
+            job.note = note
+            job.address = address
+            job.id = Date.now()
+            console.log(job);
+            props.onAddJob(job)
+            navigation.navigate('Xác nhận công việc')
+        } else {
+            setError('Thời gian làm việc đã qua. Vui lòng chọn lại!')
+        }
     }
 
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
                 {/* Day picker */}
-                <View style={{ marginHorizontal: 20 }}>
+                <View style={{ marginHorizontal: 20 }}
+                    testID='datePicker'
+                >
                     <CalendarStrip
                         calendarAnimation={{ type: 'sequence', duration: 30 }}
                         daySelectionAnimation={{ type: 'background', duration: 300, highlightColor: '#ff8c0f' }}
@@ -70,6 +78,7 @@ const WorkTime = (props) => {
                 <View style={styles.show_time}>
                     <Text style={styles.title}>Chọn giờ làm</Text>
                     <RNDateTimePicker
+                        testID='timePicker'
                         style={styles.time}
                         value={time}
                         mode="time"
@@ -80,13 +89,16 @@ const WorkTime = (props) => {
                     />
                 </View>
 
+                {/* Error */}
+                <Text testID='error' style={styles.error}>{error}</Text>
+
                 {/* Address */}
                 <View style={styles.address}>
                     <Text style={styles.title}>Địa chỉ</Text>
                     <TextInput
+                        testID='address'
                         style={[styles.input, { marginHorizontal: 20 }]}
                         onChangeText={setAddress}
-                        placeholderText="Password"
                         iconType="lock"
                         borderColor={'#bdbdbd'}
                     />
@@ -96,9 +108,9 @@ const WorkTime = (props) => {
                 <View style={styles.address}>
                     <Text style={styles.title}>Ghi chú</Text>
                     <TextInput
+                        testID='note'
                         style={[styles.input, { marginHorizontal: 20 }]}
                         onChangeText={setNote}
-                        placeholderText="Password"
                         iconType="lock"
                         borderColor={'#bdbdbd'}
                     />
@@ -108,6 +120,7 @@ const WorkTime = (props) => {
             {/* Total */}
             <View style={styles.footer}>
                 <TouchableOpacity
+                    testID='navigate_infoJob'
                     style={styles.button}
                     onPress={handleCreateJob}
                 >
@@ -144,6 +157,15 @@ const styles = StyleSheet.create({
         width: 170,
         height: 100,
     },
+
+    error: {
+        color: 'red',
+        marginTop: -20,
+        marginRight: 20,
+        paddingTop: 30,
+        alignSelf: 'flex-end'
+    },
+
     button: {
         flexDirection: 'row',
         justifyContent: 'space-between',

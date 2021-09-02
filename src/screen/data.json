@@ -1,64 +1,99 @@
 {
-    "_changes": [
-        {
-            "_firestore": [FirebaseFirestoreModule
-            ],
-            "_isMetadataChange": false,
-            "_nativeData": [Object
-            ]
-        }
-    ],
-    "_docs": [
-        {
-            "_data": [Object
-            ],
-            "_exists": true,
-            "_metadata": [FirestoreSnapshotMetadata
-            ],
-            "_ref": [FirestoreDocumentReference
-            ]
-        }
-    ],
-    "_excludesMetadataChanges": 1,
-    "_metadata": {
-        "_metadata": [
-            false,
-            false
+    "_documentPath": {
+        "_parts": [
+            "jobs",
+            "WE99ToNTtcB7guCRzjB9"
         ]
     },
-    "_query": {
-        "_collectionPath": {
+    "_firestore": {
+        "_app": {
+            "_automaticDataCollectionEnabled": true,
+            "_deleteApp": [Function bound deleteApp
+            ],
+            "_deleted": false,
+            "_initialized": true,
+            "_name": "[DEFAULT]",
+            "_nativeInitialized": true,
+            "_options": [Object
+            ]
+        },
+        "_config": {
+            "ModuleClass": [Function FirebaseFirestoreModule
+            ],
+            "hasCustomUrlOrRegionSupport": false,
+            "hasMultiAppSupport": true,
+            "namespace": "firestore",
+            "nativeEvents": [Array
+            ],
+            "nativeModuleName": [Array
+            ],
+            "statics": [Object
+            ],
+            "version": "12.6.0"
+        },
+        "_customUrlOrRegion": undefined,
+        "_nativeModule": {
+            "RNFBFirestoreCollectionModule": true,
+            "RNFBFirestoreDocumentModule": true,
+            "RNFBFirestoreModule": true,
+            "RNFBFirestoreTransactionModule": true,
+            "clearPersistence": [Function anonymous
+            ],
+            "collectionGet": [Function anonymous
+            ],
+            "collectionOffSnapshot": [Function anonymous
+            ],
+            "collectionOnSnapshot": [Function anonymous
+            ],
+            "disableNetwork": [Function anonymous
+            ],
+            "documentBatch": [Function anonymous
+            ],
+            "documentDelete": [Function anonymous
+            ],
+            "documentGet": [Function anonymous
+            ],
+            "documentOffSnapshot": [Function anonymous
+            ],
+            "documentOnSnapshot": [Function anonymous
+            ],
+            "documentSet": [Function anonymous
+            ],
+            "documentUpdate": [Function anonymous
+            ],
+            "enableNetwork": [Function anonymous
+            ],
+            "getConstants": [Function anonymous
+            ],
+            "setLogLevel": [Function anonymous
+            ],
+            "settings": [Function anonymous
+            ],
+            "terminate": [Function anonymous
+            ],
+            "transactionApplyBuffer": [Function anonymous
+            ],
+            "transactionBegin": [Function anonymous
+            ],
+            "transactionDispose": [Function anonymous
+            ],
+            "transactionGetDocument": [Function anonymous
+            ],
+            "waitForPendingWrites": [Function anonymous
+            ]
+        },
+        "_referencePath": {
             "_parts": [Array
             ]
         },
-        "_firestore": {
-            "_app": [FirebaseApp
-            ],
-            "_config": [Object
-            ],
-            "_customUrlOrRegion": undefined,
-            "_nativeModule": [Object
-            ],
-            "_referencePath": [FirestorePath
-            ],
-            "_settings": [Object
-            ],
-            "_transactionHandler": [FirestoreTransactionHandler
-            ]
+        "_settings": {
+            "ignoreUndefinedProperties": false
         },
-        "_modifiers": {
-            "_endAt": undefined,
-            "_endBefore": undefined,
-            "_filters": [Array
+        "_transactionHandler": {
+            "_firestore": [Circular
             ],
-            "_limit": undefined,
-            "_limitToLast": undefined,
-            "_orders": [Array
-            ],
-            "_startAfter": undefined,
-            "_startAt": undefined,
-            "_type": "collection"
+            "_pending": [Object
+            ]
         }
-    },
-    "_source": "get"
+    }
 }
