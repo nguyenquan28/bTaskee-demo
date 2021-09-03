@@ -3,6 +3,7 @@
 *   step 1: LINE 28 - User want to see list task
 *   step 2: LINE 31 - User check description task 
 *   step 3: LINE 42 - User want to change task
+*   step 4: LINE 55 - User want to disable task
 * */
 const {
     scrollTo,
@@ -49,6 +50,11 @@ describe('View list task', () => {
         await tapId('change_duration')
         await tapId('duration_2')
         await tapText('Lưu')
+        await tapText('OK')
+    })
+
+    it('LINE 55 - User want to disable task', async () => {
+        await tapText('Huỷ việc')
         await tapText('OK')
     })
 })
