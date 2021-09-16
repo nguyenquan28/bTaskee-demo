@@ -18,8 +18,8 @@ const Service = ({ navigation }) => {
                     let item = {}
                     item = doc._data,
                         item.id = doc._ref._documentPath._parts[1],
-                        // console.log(doc._ref._documentPath._parts[1]);
-                        data.push(doc._data)
+                        console.log(doc._ref._documentPath._parts[1]);
+                    data.push(doc._data)
                 })
             })
         setJobs(data)

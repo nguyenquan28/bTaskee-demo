@@ -1,6 +1,7 @@
 export default {
     app: {
         token: '',
-        job: {}
+        job: {},
+        listJob: []
     }
 }

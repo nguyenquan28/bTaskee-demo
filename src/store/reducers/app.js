@@ -2,7 +2,8 @@ import { handleActions } from "redux-actions";
 import initState from '../initState'
 import {
     addToken,
-    addJob
+    addJob,
+    fetchJobs
 } from '../actions'
 
 export default handleActions({

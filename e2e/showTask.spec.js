@@ -3,6 +3,8 @@
 *   step 1: LINE 28 - User want to see list task
 *   step 2: LINE 31 - User check description task 
 *   step 3: LINE 42 - User want to change task
+*                   - CASE 1: Time is invalid
+                    - CASE 2: Time is valid
 *   step 4: LINE 55 - User want to disable task
 * */
 const {
@@ -19,7 +21,7 @@ describe('View list task', () => {
         await device.launchApp();
     });
 
-    it('LINE 28 - User want to see list task', async () => {
+    it('Step 1: LINE 28 - User want to see list task', async () => {
         await enterInput('phoneNumber_input', '397411511')
         await enterInput('password_input', '19111998qq')
         await tapId('login_btn')
@@ -29,7 +31,7 @@ describe('View list task', () => {
         await tapText('Chi tiết')
     })
 
-    it('LINE 31 - User check description task', async () => {
+    it('Step 2: LINE 31 - User check description task', async () => {
         await expectIdToHaveText('header', 'Vị trí làm việc')
         await expectIdToHaveText('home_number', '21 Than Thai')
         await expectIdToHaveText('address', '21 Than Thai, Hai Chau, Da Nang')
@@ -40,7 +42,7 @@ describe('View list task', () => {
         await expectIdToHaveText('price', '400000 VND')
     })
 
-    it('LINE 42 - User want to change task', async () => {
+    it('Step 3: LINE 42 - User want to change task', async () => {
         await tapId('change_address')
         await enterInput('input_address', 'K12/12 Trường Sơn, Hoà Thọ Tây, Cẩm Lệ, Đà Nẵng')
         await tapId('save_address')
@@ -49,6 +51,13 @@ describe('View list task', () => {
         await tapId('save_note')
         await tapId('change_duration')
         await tapId('duration_2')
+        await tapId('date')
+        // CASE 1: Time is invalid
+
+
+        // CASE 2: Time is valid
+
+
         await tapText('Lưu')
         await tapText('OK')
     })

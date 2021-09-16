@@ -73,7 +73,7 @@ const DescriptionTask = ({ navigation, route }) => {
         handlePrice(value)
         job.duration = value
         refRBSheet.current.close()
-        console.log(job);
+        // console.log(job);
     }
 
     // Handle price
