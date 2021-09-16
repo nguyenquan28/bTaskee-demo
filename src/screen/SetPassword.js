@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const SetPassword = ({ navigation, route }) => {
 
@@ -27,7 +27,7 @@ const SetPassword = ({ navigation, route }) => {
         if (password.length > 6) {
             addUser()
             navigation.replace('Đăng nhập')
-            console.log(email + introCode + name + password + phoneNumber + UID);
+            // console.log(email + introCode + name + password + phoneNumber + UID);
         }
     }
 
@@ -67,12 +67,13 @@ const styles = StyleSheet.create({
 
     p: {
         fontSize: 18,
-        fontWeight: '300'
+        fontWeight: '300',
+        marginHorizontal: 20
     },
 
     input: {
+        marginHorizontal: 20,
         fontSize: 18,
-        minWidth: 250,
         height: 60,
         borderWidth: 1,
         marginTop: 50,

@@ -1,6 +1,6 @@
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 import React, { useEffect, useState } from 'react'
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import auth from '@react-native-firebase/auth'
 
@@ -12,7 +12,7 @@ const VerifyCode = ({ navigation, route }) => {
     const [verifyCode, setVerifyCode] = useState("")
     const [countdown, setCountdown] = useState(defaultCountdown)
     const [confirm, setConfirm] = useState(null);
-
+    const [error, setError] = useState('')
     const { phoneNumber } = route.params
     const { name } = route.params
     const { email } = route.params
@@ -41,7 +41,6 @@ const VerifyCode = ({ navigation, route }) => {
     const signInWithPhoneNumber = async (phoneNumber) => {
         const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
         try {
-            // console.log(confirmation);
             setConfirm(confirmation);
         } catch (error) {
             Alert('Số điện thoại không đúng.')
@@ -51,6 +50,7 @@ const VerifyCode = ({ navigation, route }) => {
     // Confirm OTP
     const confirmCode = async (code) => {
         try {
+            // console.log(confirm._auth._user.providerData);
             await confirm.confirm(code)
             id = confirm._auth._user.uid
         } catch (error) {
@@ -59,17 +59,24 @@ const VerifyCode = ({ navigation, route }) => {
     }
 
     // Go to SetPassword
-    const onVerifiCode = async () => {
+    const onVerifyCode = async () => {
         if (verifyCode.length === 6) {
-            await confirmCode(verifyCode)
-            // console.log(email + introCode + name + phoneNumber + UID)
-            navigation.navigate('Đặt mật khẩu', {
-                phoneNumber: phoneNumber,
-                name: name,
-                email: email,
-                introCode: introCode,
-                UID: id
-            })
+            try {
+                setError('')
+                await confirmCode(verifyCode)
+                // console.log(email + introCode + name + phoneNumber + UID)
+                navigation.navigate('Đặt mật khẩu', {
+                    phoneNumber: phoneNumber,
+                    name: name,
+                    email: email,
+                    introCode: introCode,
+                    UID: id
+                })
+            } catch (error) {
+                alert(error)
+                setError('Mã xác nhận không đúng')
+            }
+
         }
     }
 
@@ -83,15 +90,27 @@ const VerifyCode = ({ navigation, route }) => {
             <Text style={styles.p}>Nhận mã kích hoạt gồm 6 chữ số đã được gửi đến số điện thoại của bạn.</Text>
 
             <View style={styles.containerInput}>
-                <OTPInputView
+                {/* <OTPInputView
                     style={styles.rowOTP}
                     pinCount={6}
                     onCodeChanged={code => setVerifyCode(code)}
                     autoFocusOnLoad
                     codeInputFieldStyle={styles.underlineStyleBase}
                     codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                /> */}
+                <TextInput
+                    testID='verifyCode_input'
+                    style={styles.input}
+                    onChangeText={setVerifyCode}
+                    placeholder="123456"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    borderColor={'#bdbdbd'}
                 />
             </View>
+
+            {/* Error */}
+            <Text style={styles.error}>{error}</Text>
 
             {/* Footer */}
             <View style={styles.footer}>
@@ -100,7 +119,8 @@ const VerifyCode = ({ navigation, route }) => {
 
                 {/* VerifyCode */}
                 <TouchableOpacity
-                    onPress={onVerifiCode}
+                    testID='verify_btn'
+                    onPress={onVerifyCode}
                 >
                     <View style={[styles.footerRight, { backgroundColor: (verifyCode.length === 6) ? '#47d173' : '#ebebeb' }]}>
                         <Ionicons name={'chevron-forward'} size={40} color={'#fff'} />
@@ -151,6 +171,26 @@ const styles = StyleSheet.create({
         borderWidth: 5,
         color: 'black',
         fontSize: 18
+    },
+
+    input: {
+        fontSize: 18,
+        height: 60,
+        borderWidth: 1,
+        marginTop: 10,
+        marginBottom: 0,
+        borderRadius: 10,
+        paddingHorizontal: 20,
+        backgroundColor: 'white',
+        marginBottom: 30,
+    },
+
+    error: {
+        color: 'red',
+        marginTop: -20,
+        marginBottom: 30,
+        marginRight: 20,
+        alignSelf: 'flex-end'
     },
 
     footer: {

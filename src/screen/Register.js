@@ -61,8 +61,8 @@ const Register = ({ navigation, route }) => {
 
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <ScrollView style={styles.container}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+            <ScrollView testID='scrollId' style={styles.container}>
 
                 {/* Header */}
                 <View style={styles.header}>
@@ -73,6 +73,7 @@ const Register = ({ navigation, route }) => {
                 {/* Name */}
                 <Text style={styles.titleInput}>Họ và tên</Text>
                 <TextInput
+                    testID='name_input'
                     style={styles.input}
                     onChangeText={setName}
                     placeholder="John Lengend"
@@ -86,6 +87,7 @@ const Register = ({ navigation, route }) => {
                 <Text style={styles.titleInput}>Số điện thoại</Text>
                 <View style={styles.phoneArea}>
                     <TouchableOpacity
+                        testID='chooseCountryCode'
                         onPress={() => refRBSheet.current.open()}
                     >
                         <View style={styles.areaNumber}>
@@ -95,7 +97,8 @@ const Register = ({ navigation, route }) => {
                         </View>
                     </TouchableOpacity>
                     <TextInput
-                        style={styles.input}
+                        testID='phoneNumber_input'
+                        style={[styles.input, { flex: 150 }]}
                         placeholder='0987123456'
                         onChangeText={setPhoneNumber}
                         borderColor={'#bdbdbd'}
@@ -108,6 +111,7 @@ const Register = ({ navigation, route }) => {
                 {/* Email */}
                 <Text style={styles.titleInput}>Email</Text>
                 <TextInput
+                    testID='mail_input'
                     style={styles.input}
                     onChangeText={setEmail}
                     placeholder="johnlegend@gmail.com"
@@ -119,6 +123,7 @@ const Register = ({ navigation, route }) => {
                 {/* Code */}
                 <Text style={styles.titleInput}>Mã giới thiệu</Text>
                 <TextInput
+                    testID='verify_input'
                     style={styles.input}
                     onChangeText={setIntroCode}
                     placeholder="123456"
@@ -142,6 +147,7 @@ const Register = ({ navigation, route }) => {
                 </View>
 
                 <TouchableOpacity
+                    testID='navigate_verify_page'
                     onPress={() => onRegister(areaNumber, phoneNumber)}
                 >
                     <View style={[styles.footerRight, { backgroundColor: (name && phoneNumber) ? '#47d173' : '#ebebeb' }]}>
@@ -169,6 +175,7 @@ const Register = ({ navigation, route }) => {
             >
                 {/* Viet Nam */}
                 <TouchableOpacity
+                    testID='choose_vn_btn'
                     onPress={() => hanldeAreaNumber('+84', VN)}
                 >
                     <View style={styles.AreaCode}>
@@ -179,6 +186,7 @@ const Register = ({ navigation, route }) => {
 
                 {/* Thailand */}
                 <TouchableOpacity
+                    testID='choose_th_btn'
                     onPress={() => hanldeAreaNumber('+66', TH)}
                 >
                     <View style={styles.AreaCode}>
@@ -189,6 +197,7 @@ const Register = ({ navigation, route }) => {
 
                 {/* HongKong */}
                 <TouchableOpacity
+                    testID='choose_hk_btn'
                     onPress={() => hanldeAreaNumber('+852', HK)}
                 >
                     <View style={styles.AreaCode}>
@@ -199,6 +208,7 @@ const Register = ({ navigation, route }) => {
 
                 {/* US */}
                 <TouchableOpacity
+                    testID='choose_us_btn'
                     onPress={() => hanldeAreaNumber('+1', US)}
                 >
                     <View style={styles.AreaCode}>
@@ -215,6 +225,7 @@ const Register = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         backgroundColor: '#fff',
         padding: 20
     },
@@ -267,14 +278,13 @@ const styles = StyleSheet.create({
     },
 
     areaNumber: {
+        flex: 50,
         height: 60,
         backgroundColor: '#ebebeb',
-        paddingTop: 10,
-        paddingBottom: 10,
         paddingHorizontal: 10,
         borderRadius: 10,
         flexDirection: 'row',
-        marginBottom: 10,
+        marginBottom: 30,
         marginTop: 10,
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -283,7 +293,6 @@ const styles = StyleSheet.create({
 
     input: {
         fontSize: 18,
-        minWidth: 227,
         height: 60,
         borderWidth: 1,
         marginTop: 10,

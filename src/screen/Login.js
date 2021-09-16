@@ -1,14 +1,14 @@
-import React, { useRef } from 'react'
-import { useState } from 'react'
-import { Alert, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import firestore from '@react-native-firebase/firestore'
-import auth from '@react-native-firebase/auth';
-import Dialog from "react-native-dialog";
+import firestore from '@react-native-firebase/firestore';
+import React, { useRef, useState } from 'react';
+import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import RBSheet from "react-native-raw-bottom-sheet";
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Login = ({ navigation }) => {
+const Login = (props) => {
 
+    const navigation = useNavigation();
     // Require image
     const VN = require('../assets/images/vn.png')
     const TH = require('../assets/images/thai.jpg')
@@ -23,6 +23,15 @@ const Login = ({ navigation }) => {
     const [areaNumber, setAreaNumber] = useState('+84')
     const [flag, setFlag] = useState(VN)
 
+    const storeData = async (value) => {
+        try {
+            await AsyncStorage.setItem('@token', value)
+        } catch (e) {
+            // saving error
+            console.log(e);
+        }
+    }
+
     // Method SignIn
     const signInWithPhoneNumber = async (areaNumber, phoneNumber) => {
         let phone = areaNumber + phoneNumber
@@ -33,99 +42,114 @@ const Login = ({ navigation }) => {
                 .where('phoneNumber', '==', phone)
                 .get()
                 .then(querySnapshot => {
-                    querySnapshot.forEach((doc) => {
-                        console.log(doc._data.password);
-                        if (doc._data.password == password) {
-                            setError('')
-                            navigation.replace('Trang chủ')
-                        } else {
-                            setError('Vui lòng kiểm tra lại số điện thoại và mật khẩu.')
+                    // console.log(querySnapshot._changes);
+                    if (Array.isArray(querySnapshot._changes) && querySnapshot._changes.length) {
 
-                        }
-                    })
+                        querySnapshot.forEach((doc) => {
+                            // console.log(doc._data.password);
+                            if (doc._data.password == password) {
+                                setError('')
+                                // console.log(doc._data.uid);
+                                storeData(doc._data.uid)
+                                props.onAddToken(doc._data.uid)
+                                navigation.replace('Trang chính')
+                            } else {
+                                setError('Vui lòng kiểm tra lại số điện thoại và mật khẩu.')
+
+                            }
+                        })
+                    } else {
+                        setError('Tài khoản chưa được tạo.')
+                    }
                 })
         }
     }
 
     // Select Area number
-    const hanldeAreaNumber = (code, flag) => {
+    const handleAreaNumber = (code, flag) => {
         setAreaNumber(code)
         setFlag(flag)
         refRBSheet.current.close()
     }
 
     return (
-        <SafeAreaView>
-            <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
 
-                {/* Header */}
-                <View style={styles.header}>
-                    <Text style={styles.headerText}>Mừng trở lại,</Text>
-                    <Text style={styles.p}>Vui lòng đăng nhập để tiếp tục.</Text>
-                </View>
+            {/* Header */}
+            <View style={styles.header}>
+                <Text style={styles.headerText}>Mừng trở lại</Text>
+                <Text style={styles.p}>Vui lòng đăng nhập để tiếp tục.</Text>
+            </View>
 
-                {/* Phone number */}
-                <Text style={styles.titleInput}>Số điện thoại</Text>
-                <View style={styles.phoneArea}>
-                    <TouchableOpacity
-                        onPress={() => refRBSheet.current.open()}
-                    >
-                        <View style={styles.areaNumber}>
-                            <Image style={styles.flag} source={flag} />
-                            <Text style={[styles.p, { marginHorizontal: 5 }]}>{areaNumber}</Text>
-                            <Ionicons name={'caret-down'} size={20} color={'#4f4f4f'} />
-                        </View>
-                    </TouchableOpacity>
-                    <TextInput
-                        style={styles.input}
-                        placeholder='Nhập số điện thoại'
-                        onChangeText={setPhoneNumber}
-                        borderColor={'#bdbdbd'}
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                    />
-                </View>
-
-                {/* Password */}
-                <Text style={styles.titleInput}>Mật khẩu</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setPassword}
-                    placeholderText="Password"
-                    iconType="lock"
-                    secureTextEntry={true}
-                    borderColor={'#bdbdbd'}
-                />
-
-                {/* Error */}
-                <Text style={styles.error}>{error}</Text>
-
-                {/* Button */}
+            {/* Phone number */}
+            <Text style={styles.titleInput}>Số điện thoại</Text>
+            <View style={styles.phoneArea}>
                 <TouchableOpacity
-                    onPress={() => signInWithPhoneNumber(areaNumber, phoneNumber)}
-                    style={styles.btnLogin}
+                    testID='chooseCountryCode'
+                    onPress={() => refRBSheet.current.open()}
                 >
-                    <Text style={styles.textLogin}>Đăng nhập</Text>
+                    <View style={styles.areaNumber}>
+                        <Image style={styles.flag} source={flag} />
+                        <Text style={[styles.p, { marginHorizontal: 5 }]}>{areaNumber}</Text>
+                        <Ionicons name={'caret-down'} size={20} color={'#4f4f4f'} />
+                    </View>
                 </TouchableOpacity>
 
-                {/* Footer */}
-                <View style={styles.footer}>
-                    <View style={styles.register}>
-                        <Text style={styles.p}>Bạn chưa có tài khoản?</Text>
+                <TextInput
+                    testID='phoneNumber_input'
+                    style={[styles.input, { flex: 150 }]}
+                    placeholder='Nhập số điện thoại'
+                    onChangeText={setPhoneNumber}
+                    borderColor={'#bdbdbd'}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                />
+            </View>
 
-                        {/* onRegister */}
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate('Đăng ký')}
-                        >
-                            <Text style={styles.textLink}>Tạo tài khoản</Text>
-                        </TouchableOpacity>
-                    </View>
+            {/* Password */}
+            <Text style={styles.titleInput}>Mật khẩu</Text>
+            <TextInput
+                testID='password_input'
+                style={[styles.input, { marginHorizontal: 20 }]}
+                onChangeText={setPassword}
+                placeholderText="Password"
+                iconType="lock"
+                secureTextEntry={true}
+                borderColor={'#bdbdbd'}
+            />
 
-                    {/* onForgot Password */}
-                    <TouchableOpacity style={styles.forgotPass}>
-                        <Text style={styles.textLink}>Quên mật khẩu</Text>
+            {/* Error */}
+            <Text style={styles.error}>{error}</Text>
+
+            {/* Button */}
+            <TouchableOpacity
+                testID='login_btn'
+                onPress={() => signInWithPhoneNumber(areaNumber, phoneNumber)}
+                style={styles.btnLogin}
+            >
+                <Text style={styles.textLogin}>Đăng nhập</Text>
+            </TouchableOpacity>
+
+            {/* Footer */}
+            <View style={styles.footer}>
+                <View style={styles.register}>
+                    <Text style={styles.p}>Bạn chưa có tài khoản?</Text>
+
+                    {/* onRegister */}
+                    <TouchableOpacity
+                        testID='navigate_register_btn'
+                        onPress={() => navigation.navigate('Đăng ký')}
+                    >
+                        <Text style={styles.textLink}>Tạo tài khoản</Text>
                     </TouchableOpacity>
                 </View>
+
+                {/* onForgot Password */}
+                <TouchableOpacity style={styles.forgotPass}
+                    testID='navigate_forgotPassword_btn'
+                >
+                    <Text style={styles.textLink}>Quên mật khẩu</Text>
+                </TouchableOpacity>
             </View>
 
             {/* AreaCode */}
@@ -146,7 +170,8 @@ const Login = ({ navigation }) => {
             >
                 {/* Viet Nam */}
                 <TouchableOpacity
-                    onPress={() => hanldeAreaNumber('+84', VN)}
+                    testID='choose_vn_btn'
+                    onPress={() => handleAreaNumber('+84', VN)}
                 >
                     <View style={styles.AreaCode}>
                         <Image style={styles.flag} source={VN} />
@@ -156,7 +181,8 @@ const Login = ({ navigation }) => {
 
                 {/* Thailand */}
                 <TouchableOpacity
-                    onPress={() => hanldeAreaNumber('+66', TH)}
+                    testID='choose_th_btn'
+                    onPress={() => handleAreaNumber('+66', TH)}
                 >
                     <View style={styles.AreaCode}>
                         <Image style={styles.flag} source={TH} />
@@ -166,7 +192,8 @@ const Login = ({ navigation }) => {
 
                 {/* HongKong */}
                 <TouchableOpacity
-                    onPress={() => hanldeAreaNumber('+852', HK)}
+                    testID='choose_hk_btn'
+                    onPress={() => handleAreaNumber('+852', HK)}
                 >
                     <View style={styles.AreaCode}>
                         <Image style={styles.flag} source={HK} />
@@ -176,7 +203,8 @@ const Login = ({ navigation }) => {
 
                 {/* US */}
                 <TouchableOpacity
-                    onPress={() => hanldeAreaNumber('+1', US)}
+                    testID='choose_us_btn'
+                    onPress={() => handleAreaNumber('+1', US)}
                 >
                     <View style={styles.AreaCode}>
                         <Image style={styles.flag} source={US} />
@@ -191,18 +219,19 @@ const Login = ({ navigation }) => {
 const styles = StyleSheet.create({
 
     container: {
-        // flex: 1,
+        flex: 1,
         backgroundColor: '#fff',
-        padding: 20
     },
 
     header: {
         marginTop: 30,
-        marginBottom: 30
+        marginBottom: 30,
+        paddingHorizontal: 20
     },
 
     phoneArea: {
         flexDirection: 'row',
+        marginHorizontal: 20
     },
 
     headerText: {
@@ -220,13 +249,15 @@ const styles = StyleSheet.create({
     titleInput: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#524e4e'
+        color: '#524e4e',
+        marginHorizontal: 20
     },
 
     error: {
         color: 'red',
         marginTop: -20,
         marginBottom: 30,
+        marginRight: 20,
         alignSelf: 'flex-end'
     },
 
@@ -237,14 +268,13 @@ const styles = StyleSheet.create({
     },
 
     areaNumber: {
+        flex: 50,
         height: 60,
         backgroundColor: '#ebebeb',
-        paddingTop: 10,
-        paddingBottom: 10,
         paddingHorizontal: 10,
         borderRadius: 10,
         flexDirection: 'row',
-        marginBottom: 10,
+        marginBottom: 30,
         marginTop: 10,
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -260,7 +290,6 @@ const styles = StyleSheet.create({
 
     input: {
         fontSize: 18,
-        minWidth: 227,
         height: 60,
         borderWidth: 1,
         marginTop: 10,
@@ -276,6 +305,7 @@ const styles = StyleSheet.create({
         padding: 20,
         borderRadius: 10,
         alignItems: 'center',
+        marginHorizontal: 20
     },
 
     textLogin: {
@@ -285,13 +315,17 @@ const styles = StyleSheet.create({
     },
 
     footer: {
-        marginTop: 160,
-        alignItems: 'center'
+        position: 'absolute',
+        bottom: 50,
+        alignSelf: 'center'
     },
 
     register: {
         flexDirection: 'row',
         marginBottom: 20
+    },
+    forgotPass: {
+        alignSelf: 'center'
     },
 
     textLink: {
